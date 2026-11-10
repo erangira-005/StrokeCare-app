@@ -18,7 +18,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SKIP_DIRS = {".git", "handoff", "__pycache__", ".pytest_cache", "node_modules", ".venv", "staticfiles", "dist"}
-SKIP_FILES = {".gitkeep", ".DS_Store"}
+SKIP_FILES = {".gitkeep", ".DS_Store", ".demo-credentials.txt"}
 
 
 def all_files():

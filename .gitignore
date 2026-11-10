@@ -11,3 +11,4 @@ dist/
 handoff/
 .pytest_cache/
 .DS_Store
+.demo-credentials.txt

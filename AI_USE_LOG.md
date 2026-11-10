@@ -26,6 +26,7 @@ responsible for understanding it.
 | What was asked | What the AI produced | How it was changed afterwards |
 |---|---|---|
 | Build the Vue app, remove recordings, translate to French and Kinyarwanda, add the alert scheduler, voice notes, family calendar, messaging and the community-health-worker role, then email the team | The whole `frontend/` (Vue 3 + TypeScript, every screen, 3 languages, PWA, tests); backend apps `messaging`, `family`, `community`, voice notes, scheduler, CHW role; AI-drafted French and Kinyarwanda texts; root Dockerfile, worker, GitHub scheduler | *To be filled in by each owner* |
+| Open the project in GitHub Codespaces, with no local install | `.devcontainer/` (dev container config, compose file with PostgreSQL 16, setup and start scripts) and a README section | *To be filled in by Orion* |
 
 Every file's first lines name its owner and say "AI-assisted draft". Remove that line only after you have rewritten
 or fully reviewed the file, and say what you changed in the row above.

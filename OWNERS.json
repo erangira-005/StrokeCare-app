@@ -21,7 +21,8 @@
         "docs/DEPLOYMENT.md",
         "tools/**",
         "Dockerfile",
-        ".dockerignore"
+        ".dockerignore",
+        ".devcontainer/**"
       ]
     },
     "Kenneth Master": {

@@ -35,6 +35,8 @@ Team 3 · Foundations Project · ALU. Version 2: the first prototype lived in `E
 docker compose up --build        # PostgreSQL + app + scheduler worker on http://localhost:8000 (not yet run: see docs/DEPLOYMENT.md)
 ```
 
+Without installing anything on your computer, use GitHub Codespaces: [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/erangira-005/StrokeCare-app). It builds a cloud workspace with PostgreSQL, loads fictional demo data and starts the app on port 8000. See [`.devcontainer/README.md`](.devcontainer/README.md).
+
 Quickest way without Docker (one server, app and API together). You need Python 3.13, Node 22, and a PostgreSQL 16 you can reach. Create the database once:
 
 ```bash
