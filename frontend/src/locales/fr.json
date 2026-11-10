@@ -1,0 +1,419 @@
+{
+  "nav": {
+    "main": "Principal",
+    "home": "Accueil",
+    "today": "Aujourd'hui",
+    "learn": "Apprendre",
+    "myVisit": "Ma visite",
+    "messages": "Messages",
+    "me": "Moi",
+    "talk": "Parler",
+    "caseload": "Patients",
+    "templates": "Modèles",
+    "visits": "Visites"
+  },
+  "common": {
+    "back": "Retour",
+    "next": "Suivant",
+    "done": "Terminé",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "add": "Ajouter",
+    "open": "Ouvrir",
+    "yes": "Oui",
+    "no": "Non",
+    "draft": "Brouillon, en attente de relecture",
+    "reviewed": "Relu",
+    "readAloud": "Lire à voix haute",
+    "noteOptional": "Note (facultatif)"
+  },
+  "welcome": {
+    "title": "Un soutien au quotidien après un AVC",
+    "lead": "Suivez votre plan de rétablissement, notez votre tension et vos médicaments, et partagez-les avec les personnes qui vous aident.",
+    "safety": "StrokeCare enregistre ce que vous saisissez. Il ne pose pas de diagnostic, ne prescrit rien et ne remplace pas les urgences."
+  },
+  "auth": {
+    "signIn": "Se connecter",
+    "signOut": "Se déconnecter",
+    "create": "Créer un compte",
+    "email": "E-mail",
+    "password": "Mot de passe",
+    "name": "Votre nom",
+    "iAm": "Je suis",
+    "noAccount": "Pas encore de compte ?",
+    "haveAccount": "Vous avez déjà un compte ?",
+    "passwordHint": "Au moins 8 caractères. Évitez les mots courants."
+  },
+  "roles": {
+    "prevention": "Utilisateur en prévention",
+    "survivor": "Personne ayant eu un AVC",
+    "caregiver": "Aidant",
+    "clinician": "Soignant",
+    "chw": "Agent de santé communautaire",
+    "admin": "Administrateur",
+    "patient": "Patient",
+    "survivorHint": "Je me rétablis à la maison après un AVC",
+    "preventionHint": "Je prends soin de ma santé pour prévenir un AVC",
+    "caregiverHint": "J'aide une personne qui a eu un AVC",
+    "by": {
+      "self": "vous",
+      "survivor": "le patient",
+      "prevention": "le patient",
+      "caregiver": "l'aidant",
+      "clinician": "le soignant",
+      "chw": "l'agent de santé",
+      "admin": "l'administrateur",
+      "patient": "le patient"
+    }
+  },
+  "consent": {
+    "title": "Avant de commencer",
+    "draft": "Ces notices sont des brouillons. Le texte juridique définitif n'est pas encore rédigé.",
+    "given": "Vous avez donné votre accord.",
+    "continue": "Accepter et continuer",
+    "privacy_notice": {
+      "title": "Notice de confidentialité",
+      "body": "Nous conservons les informations de votre compte pour faire fonctionner l'application. Vous pouvez tout télécharger ou tout supprimer à tout moment depuis Moi.",
+      "agree": "J'ai lu la notice de confidentialité"
+    },
+    "health_data": {
+      "title": "Vos données de santé",
+      "body": "Nous conservons les mesures, réponses et notes que vous saisissez. Seuls vous et les personnes que vous choisissez peuvent les voir. Chaque consultation par une autre personne est enregistrée.",
+      "agree": "J'accepte que mes données de santé soient conservées et traitées"
+    }
+  },
+  "today": {
+    "morning": "Bonjour, {name}",
+    "afternoon": "Bon après-midi, {name}",
+    "evening": "Bonsoir, {name}",
+    "soFar": "Aujourd'hui jusqu'ici",
+    "tasksLine": "{n} tâches sur {total} cochées",
+    "dosesLine": "{n} prises sur {total} notées",
+    "checkinDone": "Suivi du jour fait",
+    "checkinNotYet": "Suivi du jour pas encore fait",
+    "quick": "Actions rapides",
+    "plan": "Le plan du jour",
+    "fromClinician": "De votre soignant",
+    "unread": "{n} nouveaux messages de votre équipe de soins"
+  },
+  "checkin": {
+    "title": "Suivi du jour",
+    "short": "Quelques questions rapides",
+    "lead": "Vous pouvez passer n'importe quelle question.",
+    "leadOther": "Répondez pour la personne que vous aidez. Chaque question peut être passée.",
+    "progress": "Question {n} sur {total}",
+    "skip": "Passer cette question",
+    "send": "Envoyer",
+    "thanks": "Merci. Votre suivi est enregistré.",
+    "yourWords": "Avec vos mots",
+    "source": "suivi de l'équipe"
+  },
+  "emergency": {
+    "button": "Urgence",
+    "title": "Aide en cas d'urgence",
+    "open": "Ouvrir l'aide d'urgence",
+    "call": "Appeler",
+    "message": "Si vous pensez que vous, ou une personne près de vous, faites peut-être un AVC ou une autre urgence, contactez immédiatement les services d'urgence locaux. N'attendez pas cette application.",
+    "fallback": "Si vous pensez que vous, ou une personne près de vous, faites peut-être un AVC ou une autre urgence, contactez immédiatement les services d'urgence locaux. N'attendez pas cette application.",
+    "numbers": "Numéros d'urgence",
+    "noVerified": "Aucun numéro vérifié pour votre région pour l'instant. Appelez les services d'urgence locaux comme vous le feriez d'habitude.",
+    "verifiedBy": "Vérifié par {name}"
+  },
+  "bp": {
+    "title": "Tension artérielle",
+    "add": "Ajouter une mesure",
+    "top": "Chiffre du haut",
+    "bottom": "Chiffre du bas",
+    "save": "Enregistrer la mesure",
+    "saved": "Mesure enregistrée.",
+    "hint": "Notez les chiffres affichés par votre tensiomètre. Unité : mmHg.",
+    "topAboveBottom": "Le chiffre du haut doit être plus grand que celui du bas. Vérifiez, s'il vous plaît.",
+    "when": "Quand a-t-elle été prise ?",
+    "recent": "Mesures récentes",
+    "history": "Toutes les mesures",
+    "numbersOnly": "Chiffres uniquement",
+    "none": "Pas encore de mesure.",
+    "last": "Dernière {s} / {d}",
+    "ctx": {
+      "resting": "Au repos",
+      "morning": "Le matin",
+      "evening": "Le soir",
+      "after_activity": "Après une activité",
+      "other": "Autre"
+    },
+    "showAll": "Afficher les {n} mesures"
+  },
+  "meds": {
+    "title": "Médicaments",
+    "fromClinician": "Écrits par votre soignant",
+    "summary": "{n} prises sur {total} notées aujourd'hui",
+    "none": "Aucun médicament prévu aujourd'hui.",
+    "marked": "Noté par {who}",
+    "mark": "Noter comme pris",
+    "undo": "Noté comme pris. Touchez pour annuler.",
+    "onlyClinician": "Seul votre soignant peut modifier cette liste. Si quelque chose semble faux, ajoutez-le à"
+  },
+  "talk": {
+    "title": "Tableau de parole",
+    "short": "Dites-le d'un geste",
+    "lead": "Touchez une image. Le téléphone affiche les mots en grand et les dit à voix haute.",
+    "again": "Redire",
+    "voiceOn": "Votre téléphone lit les mots à voix haute.",
+    "voiceOff": "Votre téléphone n'a pas de voix pour cette langue : les mots sont affichés en grand.",
+    "cat": {
+      "needs": "J'ai besoin",
+      "feelings": "Je ressens",
+      "answers": "Réponses",
+      "people": "Personnes"
+    }
+  },
+  "learn": {
+    "title": "Apprendre",
+    "short": "Informations relues",
+    "lead": "Chaque contenu indique sa source et s'il a été relu.",
+    "empty": "Rien pour l'instant.",
+    "source": "Source",
+    "fellBack": "Pas encore disponible dans votre langue : affiché en anglais."
+  },
+  "visit": {
+    "title": "Questions pour ma visite",
+    "lead": "Écrivez ou enregistrez vos questions dès qu'elles vous viennent.",
+    "new": "Nouvelle question",
+    "placeholder": "Écrivez une question",
+    "add": "Ajouter la question",
+    "toAsk": "Questions à poser : {n}",
+    "empty": "Pas encore de question.",
+    "discussed": "Discutée",
+    "print": "Imprimer le résumé de ma visite",
+    "printTitle": "Résumé de ma visite"
+  },
+  "voice": {
+    "record": "Enregistrer une note vocale",
+    "stop": "Arrêter et envoyer",
+    "saved": "Note vocale enregistrée.",
+    "noMic": "Le micro n'est pas disponible. Vérifiez l'autorisation du téléphone.",
+    "note": "Note vocale",
+    "notes": "Notes vocales",
+    "play": "Écouter"
+  },
+  "messages": {
+    "title": "Messages",
+    "inbox": "Messages",
+    "myTeam": "Mon équipe de soins",
+    "noThreads": "Pas encore de conversation.",
+    "none": "Pas encore de message.",
+    "notice": "Les messages ne servent pas aux urgences et ne sont pas lus en permanence.",
+    "write": "Écrire un message",
+    "send": "Envoyer",
+    "you": "Vous"
+  },
+  "calendar": {
+    "title": "Calendrier des soins",
+    "lead": "Qui fait quoi, et des notes pour la personne suivante.",
+    "add": "Ajouter au calendrier",
+    "what": "Quoi",
+    "kind": "Type",
+    "date": "Date",
+    "time": "Heure",
+    "who": "Qui s'en charge",
+    "nobody": "Pas encore décidé",
+    "where": "Où (facultatif)",
+    "done": "Fait",
+    "empty": "Rien de prévu dans les 30 prochains jours.",
+    "handover": "Notes de relais",
+    "handoverWrite": "Laissez une note pour la personne suivante",
+    "kinds": {
+      "appointment": "Rendez-vous",
+      "therapy": "Séance de rééducation",
+      "medicine_pickup": "Retrait de médicaments",
+      "transport": "Transport",
+      "visit": "Visite",
+      "other": "Autre"
+    },
+    "handoverAdd": "Ajouter la note"
+  },
+  "care": {
+    "caringFor": "Vous aidez",
+    "choose": "Choisir une personne",
+    "tasks": "tâches du plan",
+    "doses": "prises notées",
+    "checkin": "suivi du jour",
+    "newAlerts": "{n} nouvelles",
+    "caughtUp": "Tout est lu",
+    "markAllRead": "Tout marquer comme lu",
+    "markRead": "Marquer comme lu",
+    "actions": "Faire quelque chose pour la personne",
+    "noPeople": "Personne n'a encore partagé avec vous. Demandez son code à la personne.",
+    "alertNote": "Les alertes ne sont pas un service d'urgence."
+  },
+  "alerts": {
+    "urgent_answer": "{name} a répondu Oui à la question urgente du suivi ({date}).",
+    "no_check_in": "{name} n'a pas fait de suivi depuis {days} jours.",
+    "doses_not_marked": "{count} prises n'ont pas été notées comme prises par {name} hier."
+  },
+  "caseload": {
+    "title": "Vos patients",
+    "search": "Rechercher par nom",
+    "needs": "À regarder",
+    "person": "Personne",
+    "lastCheckin": "Dernier suivi",
+    "urgent": "Oui urgent, 7 jours",
+    "doses": "Prises non notées hier",
+    "messages": "Messages non lus",
+    "open": "Résumé",
+    "empty": "Personne à afficher.",
+    "never": "Jamais",
+    "today": "Aujourd'hui",
+    "daysAgo": "Il y a {n} jours",
+    "factsOnly": "Des faits uniquement : dates et nombres saisis par la personne. Aucun score de risque, aucun classement.",
+    "filter": {
+      "all": "Tout le monde",
+      "urgent": "Oui urgent cette semaine",
+      "no_check_in": "Pas de suivi depuis 2 jours ou plus",
+      "doses_not_marked": "Prises non notées"
+    }
+  },
+  "summary": {
+    "title": "Résumé",
+    "days": "{n} jours",
+    "print": "Imprimer",
+    "disclaimer": "Une description de ce que la personne a saisi. Ce n'est ni un diagnostic ni un avis médical.",
+    "readings": "{n} mesures",
+    "readingsLabel": "Mesures",
+    "onDays": "sur {n} jours sur {total}",
+    "average": "Moyenne, haut / bas",
+    "doses": "Prises notées",
+    "medsActive": "{n} médicaments dans la liste",
+    "checkins": "Suivis",
+    "urgentDays": "Jours avec Oui à la question urgente : {n}",
+    "answers": "Réponses du suivi, comptées",
+    "skipped": "{n} passées",
+    "plan": "Plan de rétablissement",
+    "noPlan": "Pas encore de plan.",
+    "doneToday": "Cochée aujourd'hui",
+    "retire": "Retirer",
+    "newTask": "Nouvelle tâche",
+    "instructions": "Consignes pour la personne",
+    "addTask": "Ajouter la tâche",
+    "medName": "Nom du médicament, comme prescrit",
+    "medDose": "Dose",
+    "medTimes": "Heures (ex. 08:00, 20:00)",
+    "addMed": "Ajouter le médicament",
+    "stopMed": "Arrêter",
+    "restartMed": "Reprendre",
+    "ownWords": "Avec leurs mots",
+    "noNotes": "Aucune note sur cette période."
+  },
+  "templates": {
+    "title": "Modèles de plan",
+    "lead": "Des listes de tâches réutilisables. En ajouter un copie les tâches dans le plan d'une personne.",
+    "name": "Nom du modèle",
+    "tasks": "Tâches",
+    "oneLine": "Une tâche par ligne.",
+    "empty": "Pas encore de modèle.",
+    "use": "Ajouter depuis un modèle"
+  },
+  "chw": {
+    "title": "Visites à domicile",
+    "lead": "Les personnes qui vous ont demandé de les visiter.",
+    "empty": "Personne n'a encore partagé avec vous. Demandez son code à la personne."
+  },
+  "visitLog": {
+    "record": "Enregistrer une visite",
+    "lead": "Fonctionne sans réseau. Elle est envoyée dès que vous êtes connecté.",
+    "whatDone": "Qu'avez-vous fait ?",
+    "reading": "Tension artérielle (facultatif)",
+    "readingHint": "Seulement si vous avez pris une mesure pendant la visite.",
+    "save": "Enregistrer la visite",
+    "saved": "Visite enregistrée.",
+    "recent": "Visites à domicile",
+    "items": {
+      "bp_reading": "Prise de la tension artérielle",
+      "medicines_reviewed": "Revu ensemble la liste des médicaments",
+      "plan_reviewed": "Revu le plan de rétablissement",
+      "check_in_done": "Posé les questions du suivi quotidien",
+      "caregiver_spoken": "Parlé avec l'aidant",
+      "health_centre_advised": "Conseillé une visite au centre de santé"
+    }
+  },
+  "sharing": {
+    "title": "Partage",
+    "leadPatient": "Vous choisissez qui voit vos données, et vous pouvez arrêter à tout moment.",
+    "leadMember": "Saisissez le code que la personne vous a donné.",
+    "invite": "Partager avec quelqu'un",
+    "who": "Pour qui ?",
+    "label": "Son nom (facultatif)",
+    "labelHint": "ex. ma fille",
+    "makeCode": "Créer un code",
+    "codeFor": "Code pour votre {who}",
+    "expires": "Utilisable une fois, jusqu'au {when}",
+    "enterCode": "Saisir un code",
+    "link": "Lier",
+    "linked": "Lien créé.",
+    "current": "Partagé actuellement",
+    "none": "Partagé avec personne.",
+    "end": "Arrêter le partage",
+    "confirmEnd": "Arrêter le partage ? L'accès est coupé immédiatement.",
+    "waiting": "En attente de la saisie du code",
+    "scopes": {
+      "caregiver": "Cette personne peut voir votre plan, vos mesures, vos médicaments et vos suivis, ajouter des mesures et cocher des tâches pour vous, et utiliser le calendrier et les messages.",
+      "clinician": "Cette personne peut voir vos données, écrire votre plan de rétablissement et votre liste de médicaments, et écrire à votre équipe de soins.",
+      "chw": "Cette personne peut voir vos données, prendre des mesures lors des visites à domicile, enregistrer les visites, et utiliser le calendrier et les messages."
+    },
+    "status": {
+      "pending": "En attente",
+      "active": "Actif",
+      "revoked": "Terminé"
+    }
+  },
+  "settings": {
+    "title": "Moi",
+    "language": "Langue",
+    "translationNote": "Les textes en kinyarwanda et en français sont des brouillons jusqu'à leur relecture par un locuteur natif.",
+    "look": "Apparence",
+    "textSize": "Taille du texte",
+    "export": "Télécharger mes données",
+    "delete": "Supprimer mon compte",
+    "deleteHint": "Cela supprime votre compte et toutes vos données. C'est définitif.",
+    "deleteButton": "Tout supprimer",
+    "deleteConfirm": "Supprimer définitivement votre compte et toutes vos données ?",
+    "verified": "Votre compte professionnel est vérifié.",
+    "notVerified": "Votre compte professionnel attend la vérification d'un administrateur.",
+    "theme": {
+      "system": "Comme mon téléphone",
+      "light": "Clair",
+      "dark": "Sombre"
+    },
+    "size": {
+      "100": "Texte normal",
+      "125": "Grand texte",
+      "150": "Texte plus grand",
+      "200": "Texte très grand"
+    },
+    "pref": {
+      "high_contrast": "Contraste élevé",
+      "easy_read_font": "Police facile à lire",
+      "reduce_motion": "Réduire les animations",
+      "audio_first": "Lire les écrans à voix haute",
+      "one_question_at_a_time": "Une question à la fois",
+      "one_handed_layout": "Utilisation à une main",
+      "low_data_mode": "Économie de données"
+    },
+    "prefHint": {
+      "high_contrast": "Couleurs et bordures plus marquées",
+      "easy_read_font": "Des lettres plus faciles à distinguer",
+      "reduce_motion": "Pas de glissement ni de fondu",
+      "audio_first": "Utilise la voix de votre téléphone",
+      "one_question_at_a_time": "Un suivi plus calme avec de grands boutons",
+      "one_handed_layout": "Les boutons principaux restent sous le pouce",
+      "low_data_mode": "Texte seulement, sans vidéo"
+    }
+  },
+  "offline": {
+    "notice": "Vous êtes hors ligne. Ce que vous saisissez est gardé et envoyé plus tard.",
+    "pending": "{n} saisies en attente d'envoi.",
+    "saved": "Enregistré sur ce téléphone. Envoyé dès que vous serez en ligne.",
+    "sendNow": "Envoyer {n} saisies en attente"
+  }
+}

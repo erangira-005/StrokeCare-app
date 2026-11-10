@@ -1,0 +1,9 @@
+.git
+handoff
+**/__pycache__
+**/*.pyc
+**/.pytest_cache
+backend/staticfiles
+frontend/node_modules
+frontend/dist
+.env
