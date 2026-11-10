@@ -42,10 +42,45 @@ Ports are **private** by default: only you, signed in to GitHub, can open the ad
 cd backend && .venv/bin/python -m pytest            # backend tests
 cd frontend && npm test                             # frontend tests
 bash .devcontainer/start.sh                         # restart the server and worker
+bash .devcontainer/check.sh                         # check that everything is running
 ```
 
 After changing frontend code, run `cd frontend && npm run build`, then reload the page. For hot reload instead,
 run `npm run dev` in `frontend/` and open port 5173 (the API stays on 8000).
+
+## Check that it is running
+
+The checks run by themselves at the end of every start. Run them again at any time:
+
+```bash
+bash .devcontainer/check.sh
+```
+
+It checks, in order: the server answers on port 8000, the web app page loads, the `*.app.github.dev` address that
+GitHub's forwarding uses is accepted, the API and database answer, the alert worker runs, and the demo accounts
+exist. Every failed check says what to run next. When all pass it prints the address to open.
+
+### "HTTP ERROR 401" in the browser
+
+If `check.sh` passes but the browser shows **HTTP ERROR 401**, the app is fine and GitHub's port forwarding is asking
+you to sign in (StrokeCare itself never returns 401 for a page). Do this:
+
+1. Open it from the **Ports** tab: hover over port 8000 and click the globe icon (**Open in Browser**). Do not paste
+   the address into a new tab.
+2. Be signed in to GitHub, in the same browser profile, as the account that owns the Codespace.
+3. Allow cookies for `[*.]github.dev` (in Chrome: `chrome://settings/cookies`, "Sites that can always use
+   cookies"). Blocked third-party cookies are the usual cause.
+4. Last resort: Ports tab, right-click port 8000, **Port Visibility**, **Public**. Anyone with the address can then
+   open the app, so set it back to **Private** afterwards.
+
+### Update an existing Codespace
+
+A Codespace made before a fix was pushed keeps the old scripts. Get the new ones and restart:
+
+```bash
+git pull
+bash .devcontainer/start.sh
+```
 
 ## If something goes wrong
 
@@ -58,6 +93,8 @@ run `npm run dev` in `frontend/` and open port 5173 (the API stays on 8000).
 
 ## Status
 
-The setup scripts were run and checked in a normal Linux environment against PostgreSQL 16. The dev container
-itself (the two containers, port forwarding) has not been built by the person who wrote it, because no Docker was
-available there. If the first Codespace fails to build, send the creation log to Orion.
+The setup, start and check scripts were run end to end in a clean copy of the repository against PostgreSQL 16, with
+the environment values from `devcontainer.json` and a Codespaces-style host name: first start, restart, and a dead
+server (the checks fail as they should). The dev container itself (the two containers and GitHub's port forwarding) has
+not been built by the person who wrote it, because no Docker was available there. If a Codespace fails to build, send
+the creation log to Orion.
