@@ -1,6 +1,7 @@
 // Owner: Orion Kabeza (DevOps) · AI-assisted draft, see AI_USE_LOG.md
-// Opens StrokeCare in GitHub Codespaces (or any dev-container tool): Python 3.13, Node 22 and PostgreSQL 16,
-// then installs everything, builds the web app, loads fictional demo data and starts the server on port 8000.
+// Opens StrokeCare in GitHub Codespaces (or any dev-container tool): Python 3.13, Node 22 (only used to run the
+// frontend tests) and PostgreSQL 16, then installs the backend, loads fictional demo data and starts the server on
+// port 8000. The web app is plain files, so there is nothing to build.
 // This file may contain comments (dev container files are JSONC).
 {
   "name": "StrokeCare",
@@ -35,7 +36,7 @@
 
   "customizations": {
     "vscode": {
-      "extensions": ["ms-python.python", "Vue.volar"]
+      "extensions": ["ms-python.python", "esbenp.prettier-vscode"]
     }
   }
 }

@@ -25,13 +25,13 @@ document gets broken; each one below is also a test or a database constraint.
 | 17 | A community health worker never writes the plan or the medicine list | `CHW_ALLOWED` scopes; tested |
 | 18 | Only real audio is stored as a voice note, with size and length caps; listening by others is audited | File signature check; tests send fake audio, images and text |
 | 19 | French and Kinyarwanda texts are AI drafts until a native speaker reviews them | Content keeps `draft` status; Settings says so; `seed_reference` never overwrites a reviewed row |
-| 20 | Personal health data is not cached by the service worker | Only public endpoints are in the PWA's runtime cache. The one exception is the person's own opt-in copy, rule 24 |
+| 20 | Personal health data is not cached by the service worker | Only public endpoints are in the PWA's runtime cache (`PUBLIC_API` in `frontend/site/sw.js`; `frontend/tests/site.test.js` fails if a personal path matches it). The one exception is the person's own opt-in copy, rule 24 |
 | 21 | Movement, goals and the progress dashboard are counts and plain words only: no score, grade, percentage, streak, target or "improvement" | No such field exists on `Goal`, `MobilityLog`, `CarePhase` or `CustomPhrase`; `test_no_judgement_field_*` covers every new response; `test_progress_has_no_percentages_streaks_or_targets`; an empty day is empty, never a "miss" |
 | 22 | A recovery stage is the clinician's own wording. The app ships no medical definition of a stage | Written only with `manage_plan` (verified clinician); no stage fixture or default exists; patients, caregivers and health workers get 403 |
 | 23 | The doctor's overview lists facts in NAME order, never ranked by importance or risk | `test_doctor_overview_lists_facts_in_name_order...`; only linked, consenting patients and granted scopes appear |
-| 24 | The optional offline copy is OFF by default, holds only the person's own plan-type data, never blood pressure, check-ins or messages, belongs to one person, and is wiped at sign-out | `frontend/tests/offline-copy.spec.ts` and `auth-offline.spec.ts`; Settings explains it keeps data on the phone until sign-out |
-| 25 | Nothing in a check-in is ever pre-answered. An unanswered question is sent as skipped, and an urgent answer shows emergency guidance at once even with all questions on one screen | `CheckIn.vue`; browser run `Check-in ... Nothing is pre-answered`, `Emergency guidance shows at once, before sending` |
-| 26 | Being offline never signs a person out | `auth.load` ends the session only on a 401 or 403 from the server; `auth-offline.spec.ts` |
+| 24 | The optional offline copy is OFF by default, holds only the person's own plan-type data, never blood pressure, check-ins or messages, belongs to one person, and is wiped at sign-out | `frontend/tests/offline-copy.test.js` and `auth-offline.test.js`; Settings explains it keeps data on the phone until sign-out |
+| 25 | Nothing in a check-in is ever pre-answered. An unanswered question is sent as skipped, and an urgent answer shows emergency guidance at once even with all questions on one screen | `frontend/site/js/views/patient/check-in.js`; browser run `Check-in ... Nothing is pre-answered`, `Emergency guidance shows at once, before sending` |
+| 26 | Being offline never signs a person out | `auth.load` ends the session only on a 401 or 403 from the server; `frontend/tests/auth-offline.test.js` |
 
 ## Frontend rules (for Happy)
 
@@ -39,7 +39,8 @@ document gets broken; each one below is also a test or a database constraint.
 - Show the emergency banner/button on every screen. When a question has `urgent_values` and the user picks one, show guidance immediately, before submitting.
 - Show each education item's source and review status. Mark `draft` content visibly.
 - Do not write medical copy in the UI. Medical text comes from the API (reviewed content) or waits for review.
-- Use the tokens in `frontend/design-tokens.css`. Red (`--danger`) is for emergency help only.
+- Use the tokens in `frontend/site/css/tokens.css`. Red (`--danger`) is for emergency help only.
+- Put text from people or the server into the page only through an `html` template (it escapes), never with `innerHTML` and never by gluing strings into markup. Use `raw()` only for markup the code built itself (`frontend/tests/dom.test.js`). Add no inline scripts or `onclick="..."`: the Content Security Policy blocks them and `frontend/tests/site.test.js` fails.
 - Never add streaks, scores or confetti. Recovery is not a game, and a broken streak shames people.
 - No targets, no percentages, no colour that means good or bad on the movement log or the progress screens. Show counts and a table with the same numbers.
 - A day before a plan, a medicine or a reading existed is an empty day ("–"), never "0 of 3".

@@ -21,7 +21,7 @@ def spa(request):
     """Every app route (/today, /p/me/checkin, ...) gets the app's index.html; the app's router takes over."""
     index = settings.FRONTEND_DIST / "index.html"
     if not index.exists():
-        return JsonResponse({"error": {"code": "no_frontend", "message": "The web app is not built. Run npm run build in frontend/."}}, status=404)
+        return JsonResponse({"error": {"code": "no_frontend", "message": "The web app files were not found. Check that frontend/site/index.html exists (or that FRONTEND_DIST points at it)."}}, status=404)
     response = FileResponse(open(index, "rb"), content_type="text/html; charset=utf-8")
     response["Cache-Control"] = "no-cache"
     response["Content-Security-Policy"] = settings.CONTENT_SECURITY_POLICY

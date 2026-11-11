@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Owner: Orion Kabeza (DevOps) · AI-assisted draft, see AI_USE_LOG.md
-# Runs once when the Codespace is created: installs packages, builds the web app, prepares the database and
-# loads fictional demo data. Safe to run again.
+# Runs once when the Codespace is created: installs the backend packages, prepares the database and loads
+# fictional demo data. Safe to run again.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -12,10 +12,7 @@ cd "$ROOT/backend"
 [ -d .venv ] || python -m venv .venv
 .venv/bin/pip install --quiet -r requirements-dev.txt
 
-echo "==> Web app (install and build)"
-cd "$ROOT/frontend"
-npm ci --no-audit --no-fund
-npm run build
+# The web app (frontend/site) is plain HTML, CSS and JavaScript: nothing to install or build.
 
 echo "==> Database"
 cd "$ROOT/backend"

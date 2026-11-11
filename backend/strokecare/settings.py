@@ -179,13 +179,14 @@ STORAGES = {
 if DEBUG:
     STORAGES["staticfiles"] = {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"}
 
-# --- The web app (built Vue files) ---------------------------------------------------------------------
-# One deployable: Django serves the built app at "/" and the API under /api/. Build it with `npm run build` in
-# frontend/ (the Dockerfile does this). Without a build, the API still works on its own.
-FRONTEND_DIST = Path(os.environ.get("FRONTEND_DIST", BASE_DIR.parent / "frontend" / "dist"))
+# --- The web app (plain HTML, CSS and JavaScript) --------------------------------------------------------
+# One deployable: Django serves the files in frontend/site at "/" and the API under /api/. There is no build step:
+# the files are served as they are. Without the folder, the API still works on its own.
+FRONTEND_DIST = Path(os.environ.get("FRONTEND_DIST", BASE_DIR.parent / "frontend" / "site"))
 if FRONTEND_DIST.exists():
     WHITENOISE_ROOT = FRONTEND_DIST
     WHITENOISE_INDEX_FILE = True
+    WHITENOISE_MIMETYPES = {".webmanifest": "application/manifest+json"}
 # Applied to the app's page. Fonts come from Google Fonts; everything else from this site only.
 CONTENT_SECURITY_POLICY = (
     "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; "

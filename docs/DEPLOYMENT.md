@@ -5,8 +5,8 @@
 
 | Item | State |
 |---|---|
-| Backend on PostgreSQL 16: migrations apply, 304 tests pass | **Verified** in the build session |
-| Frontend: type check, production build, 9 Vitest tests | **Verified** |
+| Backend on PostgreSQL 16: migrations apply, 436 tests pass | **Verified** in the build session |
+| Frontend (plain HTML, CSS and JavaScript, no build): 62 Node tests, and the service worker's file list is current | **Verified** |
 | Django serving the built app at `/` with the API under `/api/` | **Verified**, in a real browser: every role's main flows passed with no console errors (sign-in, check-in with urgent guidance, reading, dose, voice note recorded with the browser's recorder, message, Kinyarwanda + dark theme, caregiver alert and calendar, clinician caseload and summary, CHW home visit) |
 | `manage.py check --deploy` with production settings | **Verified** earlier; only a short-test-secret warning and an optional HSTS-preload note |
 | Root `Dockerfile`, `docker-compose.yml` | **Written, never built** (no Docker daemon in the build session). Build once and fix what it finds |
@@ -15,7 +15,8 @@
 
 ## One image, three jobs
 
-The root `Dockerfile` builds the Vue app, then the Python service that serves it. The same image runs as:
+The root `Dockerfile` builds the Python service and copies the web app's plain files (`frontend/site`) next to it, so
+Django serves both. There is no Node stage and no front-end build. The same image runs as:
 
 | Process | Command | Notes |
 |---|---|---|

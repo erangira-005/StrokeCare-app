@@ -5,8 +5,8 @@ Nothing to install on your computer. You need a GitHub account and a browser.
 
 1. On the repository page, choose **Code → Codespaces → Create codespace on main**
    (or use the "Open in GitHub Codespaces" button in the main README).
-2. Wait for the first build. It installs the packages, builds the web app, creates the database and loads
-   fictional demo data. This takes a few minutes the first time.
+2. Wait for the first build. It installs the backend packages, creates the database and loads fictional demo data
+   (the web app is plain files, so there is nothing to build). This takes a few minutes the first time.
 3. When it is ready, the app opens in a preview tab. If it does not, open the **Ports** tab and open port **8000**
    in the browser.
 4. Sign in with one of the demo accounts. The password for all of them is in `.demo-credentials.txt` in the root
@@ -28,7 +28,7 @@ The data is fictional. Do not enter real health information in a codespace.
 
 | | |
 |---|---|
-| App and API together | port 8000 (the web app is built once, and Django serves it) |
+| App and API together | port 8000 (Django serves the web app's files from `frontend/site`) |
 | API documentation | `/api/v1/docs/` on the same address |
 | Alert worker | runs in the background every 15 minutes |
 | Database | PostgreSQL 16 in a second container, data kept between stops and starts |
@@ -45,8 +45,8 @@ bash .devcontainer/start.sh                         # restart the server and wor
 bash .devcontainer/check.sh                         # check that everything is running
 ```
 
-After changing frontend code, run `cd frontend && npm run build`, then reload the page. For hot reload instead,
-run `npm run dev` in `frontend/` and open port 5173 (the API stays on 8000).
+After changing frontend code (any file under `frontend/site/`), just reload the page: there is no build and no dev
+server. Then run `python tools/make_precache.py` so the offline file list stays current.
 
 ## Check that it is running
 

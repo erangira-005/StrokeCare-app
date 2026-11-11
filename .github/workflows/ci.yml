@@ -30,13 +30,15 @@ jobs:
         run: pytest -p no:warnings
   frontend:
     runs-on: ubuntu-latest
-    defaults: { run: { working-directory: frontend } }
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with: { node-version: 22, cache: npm, cache-dependency-path: frontend/package-lock.json }
-      - run: npm ci
-      - name: Tests (translations complete in all three languages, API client, offline queue)
+        with: { node-version: 22 }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.13" }
+      # No packages to install and no build: the app is plain files in frontend/site.
+      - name: Tests (translations complete in all three languages, API client, offline queue, saved-copy privacy)
+        working-directory: frontend
         run: npm test
-      - name: Type check and production build
-        run: npm run build
+      - name: The service worker's offline file list is up to date
+        run: python tools/make_precache.py --check

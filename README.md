@@ -25,9 +25,9 @@ Team 3 · Foundations Project · ALU. Version 2: the first prototype lived in `E
 | Backend | Django 5.2 + Django REST Framework, Python 3.13 |
 | Database | PostgreSQL 16 (no SQLite anywhere; voice notes are stored in PostgreSQL too) |
 | Auth | bcrypt password hashes, 15-minute JWT access tokens, rotating refresh tokens revoked on the server |
-| Frontend | Vue 3 + Vite + TypeScript, Pinia, Vue Router, vue-i18n, Phosphor icons, uPlot; installable PWA that works offline |
+| Frontend | Plain HTML, CSS and JavaScript: no framework, no packages, no build step. Phosphor icons drawn inline, plain-SVG charts; installable PWA that works offline |
 | Jobs | `run_scheduler` worker, or a guarded HTTP endpoint called by GitHub Actions every 15 minutes |
-| Tests | pytest (backend), Vitest (frontend), plus a browser run of every role's main flows in the build session |
+| Tests | pytest (backend), Node's built-in test runner (frontend), plus a browser run of every role's main flows in the build session |
 | Delivery | GitHub Actions (backend + frontend checks), one Docker image serving the API and the app |
 
 ## Run it locally
@@ -38,15 +38,14 @@ docker compose up --build        # PostgreSQL + app + scheduler worker on http:/
 
 Without installing anything on your computer, use GitHub Codespaces: [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/erangira-005/StrokeCare-app). It builds a cloud workspace with PostgreSQL, loads fictional demo data and starts the app on port 8000. See [`.devcontainer/README.md`](.devcontainer/README.md).
 
-Quickest way without Docker (one server, app and API together). You need Python 3.13, Node 22, and a PostgreSQL 16 you can reach. Create the database once:
+Quickest way without Docker (one server, app and API together). You need Python 3.13 and a PostgreSQL 16 you can reach. Nothing to build for the web app: it is plain files in `frontend/site`, and Django serves them. Create the database once:
 
 ```bash
 psql -U postgres -c "CREATE USER strokecare PASSWORD 'strokecare' CREATEDB" -c "CREATE DATABASE strokecare OWNER strokecare"
 ```
 
 ```bash
-cd frontend && npm ci && npm run build          # builds the app into frontend/dist
-cd ../backend
+cd backend
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements-dev.txt
 export DJANGO_DEBUG=1 ALLOW_DEMO_DATA=1 DATABASE_URL=postgres://strokecare:strokecare@localhost:5432/strokecare
@@ -57,27 +56,12 @@ python manage.py runserver                      # open http://localhost:8000
 
 `seed_demo` lists the fictional accounts (demo-survivor, demo-caregiver, demo-clinician, demo-chw, demo-prevention, demo-admin, all at example.org). Use the password you chose. The data is fictional and must never be used with real people.
 
-For development with hot reload (API and app on separate ports), with your own PostgreSQL:
+To change the web app, edit a file under `frontend/site/` and reload the page: there is no build and no dev server to run. After adding, removing or changing a file there, refresh the offline file list with `python tools/make_precache.py` (a test and CI fail if it is out of date). API docs are at `/api/v1/docs/`.
 
 ```bash
-cd backend
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements-dev.txt
-export DJANGO_DEBUG=1 DATABASE_URL=postgres://strokecare:strokecare@localhost:5432/strokecare
-python manage.py migrate
-python manage.py seed_demo        # fictional demo accounts for every role; prints their password
-python manage.py runserver        # API on :8000, API docs at /api/v1/docs/
-```
-
-```bash
-cd frontend
-npm ci
-npm run dev                       # app on http://localhost:5173, talking to the API on :8000
-```
-
-```bash
-cd backend && pytest              # 304 tests; needs DATABASE_URL
-cd frontend && npm test && npm run build
+cd backend && pytest              # backend tests; needs DATABASE_URL
+cd frontend && npm test           # frontend tests; needs Node 22 or newer, installs nothing
+python tools/make_precache.py --check
 ```
 
 ## Where things are
@@ -90,7 +74,7 @@ cd frontend && npm test && npm run build
 | `backend/apps/messaging`, `family`, `community` | care-team messages; care calendar and handover notes; CHW home visits |
 | `backend/apps/content` | education, emergency guidance and verified contacts, talk board |
 | `backend/apps/common`, `audit` | the single access-control module, error format, audit log |
-| `frontend/src` | the Vue app; `locales/` holds the three languages |
+| `frontend/site` | the web app, plain HTML, CSS and JavaScript (`js/views/` has the 31 screens, `locales/` the three languages); `frontend/tests` its tests; see `frontend/README.md` |
 | `docs/` | architecture, roles matrix, safety rules, data model, deployment, **open questions and launch blockers** |
 | `OWNERS.json` | who owns which file (`python tools/make_handoff.py --check`) |
 

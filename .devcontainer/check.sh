@@ -27,12 +27,18 @@ else
   fail "the server does not answer on port $PORT (got ${c:-000}). Run: bash .devcontainer/start.sh   then read /tmp/strokecare-web.log"
 fi
 
-# 2. The web app has been built and is served.
+# 2. The web app is served (it is plain files in frontend/site; there is nothing to build).
 c="$(code "http://127.0.0.1:$PORT/")"
 if [ "$c" = 200 ]; then
   pass "the web app page loads"
 else
-  fail "the web app page returned ${c:-000}. If it says the app is not built, run: cd frontend && npm run build"
+  fail "the web app page returned ${c:-000}. Check that frontend/site/index.html exists, then run: bash .devcontainer/start.sh"
+fi
+c="$(code "http://127.0.0.1:$PORT/js/main.js")"
+if [ "$c" = 200 ]; then
+  pass "the app's scripts load"
+else
+  fail "the app's script /js/main.js returned ${c:-000}. Check that frontend/site/js/main.js exists"
 fi
 
 # 3. The address that GitHub's port forwarding uses is accepted (otherwise sign-in fails with a host error).

@@ -22,7 +22,8 @@
         "tools/**",
         "Dockerfile",
         ".dockerignore",
-        ".devcontainer/**"
+        ".devcontainer/**",
+        "frontend/tests/site.test.js"
       ]
     },
     "Kenneth Master": {
@@ -71,8 +72,8 @@
         "backend/tests/test_content.py",
         "docs/SAFETY.md",
         "docs/OPEN_QUESTIONS.md",
-        "frontend/src/locales/**",
-        "frontend/tests/i18n.spec.ts"
+        "frontend/site/locales/**",
+        "frontend/tests/i18n.test.js"
       ]
     },
     "Emmanuel Happy Rangira": {
