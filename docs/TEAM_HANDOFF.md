@@ -1,32 +1,42 @@
 <!-- Owner: Malaika Elohim Isingizwe Mukama (Scrum Master) · AI-assisted draft, see AI_USE_LOG.md -->
 # How the team takes over the code
 
-Each person gets a zip of **their own files** (`handoff/<Name>.zip`, made by `python tools/make_handoff.py`). The
-folder layout inside is the real layout, so unzip it at the root of your clone.
+The whole project is already on `main` of **https://github.com/erangira-005/StrokeCare-app**. It went in as a few
+commits made by the AI assistant that drafted it, so no teammate has a commit in it yet. Each person gets a zip of
+**their own files** (`handoff/<Name>.zip`, made by `python tools/make_handoff.py`) so we all know exactly what is ours.
+The folder layout inside is the real layout.
+
+Your contribution is what you do next: read your files until you can explain them, test them, change what you
+disagree with, and commit that under your own name.
 
 ## Steps for everyone
 
-1. Clone `orionkabeza/StrokeCare` and create a branch: `git checkout -b feature/<your-area>`.
-2. Unzip your file into the repository root. Read every file. **You must be able to explain your files** for the technical presentation: they are yours.
-3. Run the tests (`cd backend && pytest`) before and after any change you make.
-4. Make it yours: fix what you disagree with, change what is wrong, add what is missing. Commit in small commits **under your own name**.
-5. Open a pull request using the template; link your Trello card; one teammate approves.
-6. Add or update your row in `AI_USE_LOG.md` for anything you took from AI.
+1. Clone the repository and create a branch: `git checkout -b feature/<your-area>`.
+2. Unzip your file into the repository root. It overwrites your files with identical copies, so `git status` should show
+   nothing changed. That confirms your zip matches `main`.
+3. Read every file in your zip. **You must be able to explain your files** in the technical presentation: they are yours.
+4. Run the tests before you change anything, and again after:
+   - backend: `cd backend && pytest` (needs a PostgreSQL, see the README); 436 tests should pass
+   - frontend: `cd frontend && npm ci && npm test && npm run build`; 25 tests should pass
+5. Make it yours: fix what you disagree with, change what is wrong, add what is missing. Commit in small commits **under
+   your own name**. When you have fully reviewed or rewritten a file, remove its "AI-assisted draft" line.
+6. Open a pull request using the template; link your Trello card; one teammate approves.
+7. Add or update your row in `AI_USE_LOG.md`: what you asked the AI, what it produced, and how you changed it.
 
-## Merge order
+## Suggested reading and review order
 
-The files depend on each other, so the first two must land first.
+The files depend on each other, so read in this order. Reviewers pair up as below.
 
 | Order | Who | Why first |
 |---|---|---|
-| 1 | Orion | project settings, Docker, CI, test setup: nothing runs without these |
-| 2 | Kenneth | access control, links, audit log: other apps import them |
-| 3 | Axel | users, health records, API wiring (`strokecare/urls.py`) |
+| 1 | Orion | project settings, Docker, CI, Codespaces, test setup: nothing runs without these |
+| 2 | Kenneth | access control, links, audit log, the doctor page: other apps import them |
+| 3 | Axel | users, health records, recovery features, API wiring (`strokecare/urls.py`) |
 | 4 | Erica | content app, fixtures, safety tests, translations |
 | 5 | Malaika | README, process files |
 | 6 | Happy | `frontend/` (the app). Erica's zip holds the three translation files it needs (`frontend/src/locales/`) |
 
-Migrations are committed with the app that owns them (they are in each person's zip).
+Migrations belong to the app that owns them, so they are in each person's zip.
 
 ## Reviewers (from the team report)
 
@@ -36,11 +46,11 @@ Kenneth ↔ Axel review each other. Axel reviews Happy. Malaika ↔ Erica. Kenne
 
 | Person | Start here | Questions you should be able to answer |
 |---|---|---|
-| Orion | `settings.py`, `Dockerfile`, `.github/workflows/ci.yml` | Why does the app refuse to start without a secret and a PostgreSQL URL? What is untested? |
-| Kenneth | `apps/common/access.py`, `apps/care/`, `test_role_matrix.py` | Why 404 for strangers but 403 for a missing scope? How does withdrawing consent cut access? |
-| Axel | `apps/accounts/`, `apps/health/models.py`, `services.py` | Why are check-in answers a table, not JSON? How is "one tick per task per day" guaranteed? |
-| Erica | `apps/content/`, `docs/SAFETY.md`, `test_safety.py`, `fixtures/` | Where is each safety rule enforced? What are the launch blockers? |
-| Happy | `frontend/src/api/client.ts`, `src/router.ts`, `src/views/patient/CheckIn.vue` | How does the offline outbox work? Why is health data never cached by the service worker? |
+| Orion | `settings.py`, `Dockerfile`, `.github/workflows/ci.yml`, `.devcontainer/` | Why does the app refuse to start without a secret and a PostgreSQL URL? How does the Codespace set itself up and check itself? What is untested? |
+| Kenneth | `apps/common/access.py`, `apps/care/` (including `doctor.py` and `scopes.py`), `test_role_matrix.py` | Why 404 for strangers but 403 for a missing scope? How does withdrawing consent cut access? Why does the doctor's overview list people by name and not by risk? |
+| Axel | `apps/accounts/`, `apps/health/`, `apps/recovery/`, `test_recovery_features.py` | Why are check-in answers a table, not JSON? How is "one tick per task per day" guaranteed? How does a phone's retry never save a movement entry twice? |
+| Erica | `apps/content/`, `docs/SAFETY.md` (rules 21 to 26), `test_safety.py`, `fixtures/`, `locales/` | Where is each safety rule enforced? Why does the app ship no definition of a recovery stage? What are the launch blockers? |
+| Happy | `frontend/src/api/client.ts`, `api/copy.ts`, `stores/auth.ts`, `views/patient/CheckIn.vue`, `Progress.vue`, `Mobility.vue` | How does the offline outbox work? What may the optional offline copy hold, and what never? Why is a person never signed out for being offline? |
 | Malaika | `README.md`, `OWNERS.json`, this file | Which open questions are decisions, and who owns each? |
 
 ## A note on course rules
