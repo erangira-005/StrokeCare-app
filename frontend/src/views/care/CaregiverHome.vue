@@ -4,7 +4,8 @@
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
-  PhBell, PhCalendarCheck, PhChatCircleText, PhClipboardText, PhHeartbeat, PhKey, PhNotePencil, PhPill,
+  PhBell, PhCalendarCheck, PhChartBar, PhChatCircleText, PhClipboardText, PhHeartbeat, PhKey, PhNotePencil, PhPersonSimpleWalk, PhPill,
+  PhTarget, PhUsersThree,
 } from '@phosphor-icons/vue'
 
 import { api } from '@/api/client'
@@ -36,6 +37,8 @@ const alertParams = (a: any) => ({
   ...a.detail,
   name: a.patient_name,
   date: a.detail?.date ? new Date(`${a.detail.date}T12:00:00`).toLocaleDateString(locale.value, { weekday: 'long', day: 'numeric', month: 'long' }) : '',
+  title: a.detail?.title ?? '',
+  when: a.detail?.starts_at ? new Date(a.detail.starts_at).toLocaleString(locale.value, { weekday: 'long', hour: '2-digit', minute: '2-digit' }) : '',
 })
 </script>
 
@@ -69,6 +72,7 @@ const alertParams = (a: any) => ({
         <span class="tiny">{{ new Date(a.created_at).toLocaleString(locale, { dateStyle: 'medium', timeStyle: 'short' }) }}</span>
         <div class="row">
           <RouterLink v-if="a.kind === 'urgent_answer'" to="/emergency" class="sc-chip" style="text-decoration: none">{{ t('emergency.open') }}</RouterLink>
+          <RouterLink v-else-if="a.kind === 'appointment_soon'" :to="`/p/${a.patient_id}/calendar`" class="sc-chip" style="text-decoration: none">{{ t('calendar.title') }}</RouterLink>
           <RouterLink v-else-if="a.kind === 'doses_not_marked'" :to="`/p/${a.patient_id}/medicines`" class="sc-chip" style="text-decoration: none">{{ t('meds.title') }}</RouterLink>
           <RouterLink v-else :to="`/p/${a.patient_id}/checkin`" class="sc-chip" style="text-decoration: none">{{ t('checkin.title') }}</RouterLink>
           <button v-if="!a.read" class="sc-chip" @click="read(a.id)">{{ t('care.markRead') }}</button>
@@ -82,6 +86,10 @@ const alertParams = (a: any) => ({
       <RouterLink :to="p('medicines')" class="sc-card pad row" style="text-decoration: none; color: var(--ink)"><PhPill :size="26" weight="duotone" />{{ t('meds.title') }}</RouterLink>
       <RouterLink :to="p('checkin')" class="sc-card pad row" style="text-decoration: none; color: var(--ink)"><PhClipboardText :size="26" weight="duotone" />{{ t('checkin.title') }}</RouterLink>
       <RouterLink :to="p('calendar')" class="sc-card pad row" style="text-decoration: none; color: var(--ink)"><PhCalendarCheck :size="26" weight="duotone" />{{ t('calendar.title') }}</RouterLink>
+      <RouterLink :to="p('mobility')" class="sc-card pad row" style="text-decoration: none; color: var(--ink)"><PhPersonSimpleWalk :size="26" weight="duotone" />{{ t('mobility.title') }}</RouterLink>
+      <RouterLink :to="p('recovery')" class="sc-card pad row" style="text-decoration: none; color: var(--ink)"><PhTarget :size="26" weight="duotone" />{{ t('recovery.titleOther') }}</RouterLink>
+      <RouterLink :to="p('progress')" class="sc-card pad row" style="text-decoration: none; color: var(--ink)"><PhChartBar :size="26" weight="duotone" />{{ t('progress.title') }}</RouterLink>
+      <RouterLink :to="p('phrases')" class="sc-card pad row" style="text-decoration: none; color: var(--ink)"><PhUsersThree :size="26" weight="duotone" />{{ t('phrases.titleOther') }}</RouterLink>
       <RouterLink :to="p('visit')" class="sc-card pad row" style="text-decoration: none; color: var(--ink)"><PhNotePencil :size="26" weight="duotone" />{{ t('visit.title') }}</RouterLink>
       <RouterLink :to="p('messages')" class="sc-card pad row" style="text-decoration: none; color: var(--ink)"><PhChatCircleText :size="26" weight="duotone" />{{ t('messages.title') }}</RouterLink>
     </nav>

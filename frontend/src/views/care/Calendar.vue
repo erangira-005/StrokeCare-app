@@ -17,7 +17,8 @@ const { base } = useSubject()
 const cal = useLoader(() => api.get(`${base.value}/calendar/`))
 const notes = useLoader(() => api.get(`${base.value}/handover/`))
 const adding = ref(false)
-const form = reactive({ title: '', kind: 'appointment', date: '', time: '09:00', assigned_to: '', location: '', notes: '' })
+const form = reactive({ title: '', kind: 'appointment', date: '', time: '09:00', assigned_to: '', location: '', notes: '', remind: '' })
+const leads = [15, 30, 60, 120, 1440, 2880]
 const note = ref('')
 const kinds = ['appointment', 'therapy', 'medicine_pickup', 'transport', 'visit', 'other']
 
@@ -35,8 +36,9 @@ async function add() {
     await api.post(`${base.value}/calendar/`, {
       title: form.title, kind: form.kind, location: form.location, notes: form.notes,
       starts_at: new Date(`${form.date}T${form.time}`).toISOString(), assigned_to: form.assigned_to || null,
+      remind_minutes_before: form.remind ? Number(form.remind) : null,
     })
-    Object.assign(form, { title: '', location: '', notes: '' })
+    Object.assign(form, { title: '', location: '', notes: '', remind: '' })
     adding.value = false
     cal.reload()
   } catch (e) {
@@ -82,6 +84,12 @@ async function addNote() {
           <option v-for="m in cal.data.value?.team ?? []" :key="m.id" :value="m.id">{{ m.display_name }} · {{ t(`roles.${m.relation === 'patient' ? 'patient' : m.relation}`) }}</option>
         </select>
       </label>
+      <label class="field">{{ t('calendar.remind') }}
+        <select v-model="form.remind" class="sc-input">
+          <option value="">{{ t('calendar.remindNone') }}</option>
+          <option v-for="m in leads" :key="m" :value="String(m)">{{ t(`calendar.remindOptions.${m}`) }}</option>
+        </select>
+      </label>
       <label class="field">{{ t('calendar.where') }}<input v-model="form.location" class="sc-input" maxlength="120" /></label>
       <label class="field">{{ t('common.noteOptional') }}<input v-model="form.notes" class="sc-input" maxlength="500" /></label>
       <div class="grid-2"><button type="button" class="sc-btn sc-btn-ghost" @click="adding = false">{{ t('common.cancel') }}</button><button class="sc-btn sc-btn-primary">{{ t('common.save') }}</button></div>
@@ -94,7 +102,7 @@ async function addNote() {
         <span class="sc-iconbox" style="width: 2.75rem; height: 2.75rem"><PhCalendarCheck :size="22" weight="duotone" /></span>
         <span class="stack-s" style="flex-grow: 1">
           <strong>{{ new Date(e.starts_at).toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' }) }} · {{ e.title }}</strong>
-          <span class="small muted">{{ t(`calendar.kinds.${e.kind}`) }}<template v-if="e.location"> · {{ e.location }}</template><template v-if="e.assigned_to_name"> · {{ e.assigned_to_name }}</template></span>
+          <span class="small muted">{{ t(`calendar.kinds.${e.kind}`) }}<template v-if="e.location"> · {{ e.location }}</template><template v-if="e.assigned_to_name"> · {{ e.assigned_to_name }}</template><template v-if="e.remind_minutes_before"> · {{ t('calendar.reminderSet', { when: t(`calendar.remindOptions.${e.remind_minutes_before}`) }) }}</template></span>
         </span>
         <button class="tick" style="width: 2.5rem; height: 2.5rem" :aria-pressed="e.is_done" :aria-label="t('calendar.done')" @click="toggle(e)"><PhCheck v-if="e.is_done" :size="18" weight="bold" /></button>
         <button class="icon-btn" :aria-label="t('common.delete')" @click="remove(e)"><PhTrash :size="18" /></button>

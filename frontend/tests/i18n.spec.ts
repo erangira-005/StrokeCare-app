@@ -46,10 +46,21 @@ describe('translations', () => {
     expect(missing).toEqual([])
   })
 
+  // Messages that deliberately have a singular and a plural form ("1 person | 2 people"), written as `one | other`.
+  const PLURAL = new Set(['doctor.people', 'mobility.entries'])
+
   it('no message uses characters that vue-i18n treats as syntax', () => {
     for (const [key, text] of Object.entries({ ...E, ...flatten(fr), ...flatten(rw) })) {
-      expect(/[@|$]/.test(text), key).toBe(false)
+      if (PLURAL.has(key)) {
+        expect(/[@$]/.test(text), key).toBe(false)
+        expect(text.split('|'), key).toHaveLength(2) // exactly one separator: a singular and a plural form
+      } else expect(/[@|$]/.test(text), key).toBe(false)
     }
+  })
+
+  it('plural messages have the same placeholders in both forms and in every language', () => {
+    for (const key of PLURAL)
+      for (const m of [E, flatten(fr), flatten(rw)]) for (const form of m[key].split('|')) expect(form, key).toContain('{n}')
   })
 
   it('emergency guidance never contains a phone number', () => {

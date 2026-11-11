@@ -5,11 +5,13 @@
 import { computed, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
-  PhCalendarCheck, PhChatCircleText, PhCheck, PhClipboardText, PhHeartbeat, PhInfo, PhMapPin, PhPill, PhPrinter,
+  PhCalendarCheck, PhChartBar, PhChatCircleText, PhCheck, PhClipboardText, PhHeartbeat, PhInfo, PhMapPin, PhPersonSimpleWalk, PhPill,
+  PhPrinter, PhTarget,
 } from '@phosphor-icons/vue'
 
 import { api, errorText } from '@/api/client'
 import BpChart from '@/components/BpChart.vue'
+import PhasesEditor from '@/components/PhasesEditor.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import VoiceNotes from '@/components/VoiceNotes.vue'
 import { useLoader } from '@/composables/useLoader'
@@ -91,6 +93,12 @@ const printPage = () => window.print()
     </PageHeader>
 
     <p class="banner"><PhInfo :size="20" />{{ s?.disclaimer ?? t('summary.disclaimer') }}</p>
+    <nav class="row" :aria-label="t('summary.title')">
+      <RouterLink :to="link('recovery')" class="sc-chip" style="text-decoration: none"><PhTarget :size="18" />{{ t('recovery.titleOther') }}</RouterLink>
+      <RouterLink :to="link('mobility')" class="sc-chip" style="text-decoration: none"><PhPersonSimpleWalk :size="18" />{{ t('mobility.title') }}</RouterLink>
+      <RouterLink :to="link('progress')" class="sc-chip" style="text-decoration: none"><PhChartBar :size="18" />{{ t('progress.title') }}</RouterLink>
+    </nav>
+    <PhasesEditor v-if="can('manage_plan')" />
     <div class="row">
       <RouterLink v-if="can('message')" :to="link('messages')" class="sc-chip" style="text-decoration: none"><PhChatCircleText :size="18" />{{ t('messages.title') }}</RouterLink>
       <RouterLink v-if="can('view_calendar')" :to="link('calendar')" class="sc-chip" style="text-decoration: none"><PhCalendarCheck :size="18" />{{ t('calendar.title') }}</RouterLink>

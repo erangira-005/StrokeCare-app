@@ -10,7 +10,11 @@
     "talk": "Talk",
     "caseload": "Caseload",
     "templates": "Templates",
-    "visits": "Visits"
+    "visits": "Visits",
+    "doctor": "Overview",
+    "recovery": "Recovery",
+    "progress": "Progress",
+    "team": "Care team"
   },
   "common": {
     "back": "Back",
@@ -95,7 +99,11 @@
     "quick": "Quick actions",
     "plan": "Today's plan",
     "fromClinician": "From your clinician",
-    "unread": "{n} new messages from your care team"
+    "unread": "{n} new messages from your care team",
+    "stage": "Your stage: {name}",
+    "comingUp": "Coming up",
+    "more": "More for your recovery",
+    "movementLine": "{n} minutes today"
   },
   "checkin": {
     "title": "Daily check-in",
@@ -107,7 +115,8 @@
     "send": "Send",
     "thanks": "Thank you. Your check-in is saved.",
     "yourWords": "In your own words",
-    "source": "team tracker"
+    "source": "team tracker",
+    "oneScreen": "Answer what you like and skip the rest. Anything left empty is sent as skipped."
   },
   "emergency": {
     "button": "Emergency",
@@ -152,7 +161,19 @@
     "marked": "Marked by {who}",
     "mark": "Mark as taken",
     "undo": "Marked as taken. Tap to undo.",
-    "onlyClinician": "Only your clinician can change this list. If something looks wrong, add it to"
+    "onlyClinician": "Only your clinician can change this list. If something looks wrong, add it to",
+    "periods": {
+      "morning": "Morning",
+      "afternoon": "Afternoon",
+      "evening": "Evening",
+      "night": "Night"
+    },
+    "markAll": "Mark all as taken",
+    "markedAll": "{n} doses marked.",
+    "courseFromTo": "From {from} to {to}",
+    "courseFrom": "From {from}, no end date",
+    "next": "Next: {time}, {name}",
+    "allDone": "All of today's doses are marked."
   },
   "talk": {
     "title": "Talk board",
@@ -231,7 +252,18 @@
       "visit": "Visit",
       "other": "Other"
     },
-    "handoverAdd": "Add note"
+    "handoverAdd": "Add note",
+    "remind": "Remind us",
+    "remindNone": "No reminder",
+    "remindOptions": {
+      "15": "15 minutes before",
+      "30": "30 minutes before",
+      "60": "1 hour before",
+      "120": "2 hours before",
+      "1440": "1 day before",
+      "2880": "2 days before"
+    },
+    "reminderSet": "Reminder: {when}"
   },
   "care": {
     "caringFor": "You are caring for",
@@ -250,7 +282,8 @@
   "alerts": {
     "urgent_answer": "{name} answered Yes to the urgent check-in question ({date}).",
     "no_check_in": "{name} has not checked in for {days} days.",
-    "doses_not_marked": "{count} doses were not marked as taken by {name} yesterday."
+    "doses_not_marked": "{count} doses were not marked as taken by {name} yesterday.",
+    "appointment_soon": "{title} for {name} starts {when}."
   },
   "caseload": {
     "title": "Your patients",
@@ -365,6 +398,11 @@
       "pending": "Waiting",
       "active": "Active",
       "revoked": "Ended"
+    },
+    "more": {
+      "caregiver": "They can also see and add to your movement log, goals and personal phrases.",
+      "clinician": "They can also see your movement log and goals, and write your recovery stages.",
+      "chw": "They can also see and add to your movement log, goals and personal phrases."
     }
   },
   "settings": {
@@ -408,12 +446,165 @@
       "one_question_at_a_time": "A calmer check-in with big buttons",
       "one_handed_layout": "Main buttons stay within thumb reach",
       "low_data_mode": "Text only, no video"
-    }
+    },
+    "offlineCopy": "Keep my plan on this phone",
+    "offlineCopyHint": "Lets you see your plan, medicines, appointments and phrases without a connection. It stays on this phone until you sign out, so turn it on only for a phone that is yours alone.",
+    "offlineCopyRemoved": "The saved copy was removed from this phone."
   },
   "offline": {
     "notice": "You are offline. What you enter is kept and sent later.",
     "pending": "{n} entries waiting to be sent.",
     "saved": "Saved on this phone. It will be sent when you are online.",
-    "sendNow": "Send {n} waiting entries"
+    "sendNow": "Send {n} waiting entries",
+    "copyShown": "You are offline. Showing what was last saved on this phone."
+  },
+  "recovery": {
+    "title": "My recovery",
+    "titleOther": "Recovery",
+    "lead": "Your stage, your goals and your movement in one place.",
+    "stage": "Current stage",
+    "noStage": "Your clinician has not set a stage yet.",
+    "noStageOther": "No stage has been set yet.",
+    "stageFrom": "Set by the clinician",
+    "careNeeded": "Care and help needed",
+    "since": "From {from}",
+    "range": "{from} to {to}",
+    "goals": "My goals",
+    "goalsOther": "Goals",
+    "goalLead": "What do you want to be able to do? Write it in your own words.",
+    "goalPlaceholder": "e.g. Walk to the gate",
+    "goalDate": "By when (optional)",
+    "goalAdd": "Add goal",
+    "goalNone": "No goals yet.",
+    "goalDone": "Done",
+    "goalMark": "Mark as done",
+    "goalUnmark": "Not done yet",
+    "goalWish": "A wish, not a deadline."
+  },
+  "mobility": {
+    "title": "Movement",
+    "lead": "Write down how you moved. There is no right amount.",
+    "leadOther": "Write down how they moved. There is no right amount.",
+    "what": "What did you do?",
+    "kinds": {
+      "walking": "Walking",
+      "standing": "Standing up",
+      "stretching": "Stretching or exercises",
+      "wheelchair": "Wheelchair",
+      "other": "Other"
+    },
+    "helpQ": "How did it go?",
+    "help": {
+      "alone": "On my own",
+      "with_aid": "With a stick, frame or other aid",
+      "with_person": "With another person's help"
+    },
+    "minutes": "Minutes (optional)",
+    "min": "{n} min",
+    "repeat": "Same as last time",
+    "repeatHint": "Adds {what} again, for today.",
+    "added": "Added.",
+    "none": "Nothing written down yet.",
+    "week": "Last 7 days",
+    "entries": "{n} entry | {n} entries",
+    "total": "{n} minutes in total"
+  },
+  "progress": {
+    "title": "Progress",
+    "lead": "What was written down, day by day. These are counts, not a score.",
+    "range": "{n} days",
+    "tasks": "Plan tasks ticked",
+    "doses": "Doses marked as taken",
+    "minutes": "Minutes of movement",
+    "totals": "Totals for {n} days",
+    "day": "Day",
+    "table": "Day by day",
+    "checked": "Checked in",
+    "chart": "The bars show counts for each day. The same numbers are in the table below.",
+    "chartLabel": "Bar chart: {what}, last {n} days",
+    "openMovement": "Open the movement log",
+    "colTasks": "Tasks",
+    "colDoses": "Doses",
+    "colMinutes": "Minutes"
+  },
+  "phase": {
+    "title": "Recovery stages",
+    "lead": "Name each stage of this person's recovery in your own words. The current stage shows on their Today screen.",
+    "add": "Add a stage",
+    "name": "Name of the stage",
+    "from": "Starts on",
+    "to": "Ends on (optional)",
+    "now": "Now",
+    "none": "No stages yet.",
+    "confirmDelete": "Remove this stage?"
+  },
+  "team": {
+    "title": "My care team",
+    "lead": "These people can see your records, because you chose to share.",
+    "none": "Nobody yet. Share a code to invite someone.",
+    "since": "Since {date}",
+    "message": "Message",
+    "manage": "Manage sharing",
+    "next": "Your next appointment",
+    "noNext": "No appointment coming up."
+  },
+  "doctor": {
+    "hello": "Hello, {name}",
+    "people": "{n} person shares with you | {n} people share with you",
+    "glance": "At a glance",
+    "needs": "People who may need a look",
+    "needsLead": "Facts they entered. Listed by name, not by importance.",
+    "reasons": {
+      "urgent": "Answered Yes to the urgent question this week",
+      "no_check_in": "No check-in for 2 days or more",
+      "doses_not_marked": "Doses not marked as taken yesterday",
+      "unread_messages": "Unread messages"
+    },
+    "none": "Nothing needs a look right now.",
+    "today": "Today's appointments",
+    "noToday": "No appointments today.",
+    "next": "Coming up this week",
+    "openCaseload": "Open the caseload"
+  },
+  "reminders": {
+    "title": "Reminders",
+    "lead": "Reminders show inside the app. Phone alerts by SMS or push are not available yet.",
+    "upcoming": "Coming up",
+    "none": "No reminders set.",
+    "add": "Add a reminder",
+    "kind": "What for",
+    "kinds": {
+      "tasks": "Recovery plan tasks",
+      "blood_pressure": "Blood pressure reading",
+      "checkin": "Daily check-in",
+      "medicines": "Medicine doses",
+      "mobility": "Movement"
+    },
+    "at": "At",
+    "days": "Days",
+    "everyDay": "Every day",
+    "active": "On",
+    "inactive": "Off"
+  },
+  "phrases": {
+    "title": "My own phrases",
+    "titleOther": "Personal phrases",
+    "lead": "Add the words this person needs most. They appear first on the talk board.",
+    "add": "Add a phrase",
+    "placeholder": "e.g. Please call my daughter",
+    "picture": "Picture",
+    "none": "No personal phrases yet.",
+    "mine": "Mine",
+    "manage": "Add or remove my phrases",
+    "icons": {
+      "chat-circle": "Talk",
+      "drop": "Water",
+      "fork-knife": "Food",
+      "toilet": "Toilet",
+      "bed": "Rest",
+      "hand-heart": "Help",
+      "phone-call": "Call",
+      "users-three": "Family"
+    }
   }
 }

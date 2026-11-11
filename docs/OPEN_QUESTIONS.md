@@ -19,6 +19,11 @@ Nothing below is solved by this repository. Items marked **BLOCKER** must be clo
 | 9 | **Not tested with real users**: screen readers, slow networks, aphasia-friendly mode, one-handed use. | Accessibility claims are unproven. | Team + stroke survivors/caregivers |
 | 10 | **Medicine flow, talk-board phrases and alert wording need clinical review.** The medicine screen records what a clinician wrote; nobody has checked the wording with a clinician yet. | Wrong or frightening wording around medicines. | Clinical reviewer |
 
+11. **Movement log categories need clinical review.** "Walking, standing up, stretching, wheelchair, other" and "on my own, with an aid, with another person's help" were chosen by the builder as everyday words. They are not a clinical scale. A clinician or therapist should confirm them. | The log still works; it shows counts only.
+12. **Recovery stages are free text by design.** The app ships no definition of a stage, so there is nothing to review, but the team should decide whether clinicians want ready-made stage templates, and who writes and reviews them.
+13. **The optional offline copy keeps personal data on a phone** (off by default, own plan data only, wiped at sign-out). Confirm the wording of the warning, and whether ethics approval needs to cover it, because phones are often shared.
+14. **All new French and Kinyarwanda texts** (about 160 strings for these features) are AI drafts, like the rest. The app says so, and a native speaker with clinical knowledge must review them.
+
 ## Decisions the team still needs to make
 
 1. **Login identifier.** Email now. Many users may not have email: should it be a phone number instead (or as well)? This changes the user table.
@@ -35,7 +40,9 @@ Nothing below is solved by this repository. Items marked **BLOCKER** must be clo
 - `Dockerfile` and `docker-compose.yml` were written but not built in the session that created them.
 - Login throttling uses per-process memory. With more than one server instance, use a shared cache.
 - The audit log is append-only in application code. In production also remove UPDATE/DELETE on `audit_auditlog` from the app's database role.
-- No automated delivery of reminders yet (they are stored and listed; nothing sends them).
+- Reminders and appointment reminders show inside the app (Today, Reminders, caregiver alerts). Nothing reaches a closed phone yet: SMS or push needs a provider.
+- A link made before the movement log existed does not share it until the patient adds it in Sharing (by design: nothing new is shared silently).
+- The browser run (`e2e`) used in the build session now also covers the new features, but it is still not in CI.
 - The scheduler (worker or GitHub cron) creates alerts on time, but they are only seen when the app is opened. Push or SMS delivery is the next step.
 - Voice notes are stored in PostgreSQL. Fine for a pilot; move them to object storage if the database grows large.
 - Reading aloud uses the phone's own voice; many phones have no Kinyarwanda voice. Recorded audio was removed on request.

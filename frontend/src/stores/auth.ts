@@ -2,7 +2,8 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 
-import { API_BASE, api, onLogout, tokens } from '@/api/client'
+import { API_BASE, ApiError, api, onLogout, tokens } from '@/api/client'
+import { setCopyOwner, wipeCopies } from '@/api/copy'
 import { clearQueue, flush } from '@/api/offline'
 
 export interface User {
@@ -30,7 +31,7 @@ export const useAuth = defineStore('auth', () => {
       case 'caregiver':
         return '/care'
       case 'clinician':
-        return '/caseload'
+        return '/doctor'
       case 'chw':
         return '/chw'
       case 'admin':
@@ -44,6 +45,7 @@ export const useAuth = defineStore('auth', () => {
     if (data.access && data.refresh) tokens.set(data.access, data.refresh)
     user.value = data.user
     consents.value = data.consents
+    setCopyOwner(data.user.id) // a saved copy belongs to one person and is never shown to another
   }
 
   async function load() {
@@ -51,8 +53,10 @@ export const useAuth = defineStore('auth', () => {
       try {
         apply(await api.get('/me/'))
         syncOutbox()
-      } catch {
-        tokens.clear()
+      } catch (err) {
+        // Only end the session when the server says the login is no longer valid. No signal, or a server that is
+        // briefly down, must never sign someone out: they could not sign back in until they were online again.
+        if (err instanceof ApiError && (err.status === 401 || err.status === 403)) tokens.clear()
       }
     }
     ready.value = true
@@ -76,6 +80,8 @@ export const useAuth = defineStore('auth', () => {
     consents.value = {}
     tokens.clear()
     clearQueue()
+    setCopyOwner(null)
+    wipeCopies() // the saved copy never outlives the sign-in
   }
 
   async function logout() {

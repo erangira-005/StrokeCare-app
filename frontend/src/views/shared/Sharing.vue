@@ -60,6 +60,7 @@ async function end(id: string) {
       </div>
       <label class="field">{{ t('sharing.label') }}<input v-model="label" class="sc-input" maxlength="80" :placeholder="t('sharing.labelHint')" /></label>
       <p class="small muted">{{ t(`sharing.scopes.${relation}`) }}</p>
+      <p class="small muted">{{ t(`sharing.more.${relation}`) }}</p>
       <button class="sc-btn sc-btn-primary">{{ t('sharing.makeCode') }}</button>
       <div v-if="created" class="sc-card pad stack-s sc-sheet" style="text-align: center; background: var(--primary-soft)">
         <span class="small muted">{{ t('sharing.codeFor', { who: t(`roles.${created.relation}`) }) }}</span>

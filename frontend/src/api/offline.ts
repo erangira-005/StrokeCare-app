@@ -41,8 +41,19 @@ export function clearQueue() {
   write([])
 }
 
-/** Send waiting entries. Stops at the first network failure; drops entries the server rejects as invalid. */
-export async function flush(send: (item: QueuedWrite) => Promise<Response>): Promise<{ sent: number; dropped: number }> {
+type FlushResult = { sent: number; dropped: number }
+let inFlight: Promise<FlushResult> | null = null
+
+/** Send waiting entries. Only one sync runs at a time, so an entry is never sent twice when the phone reconnects and
+ *  the app starts at the same moment. Stops at the first network failure; drops entries the server rejects as invalid. */
+export function flush(send: (item: QueuedWrite) => Promise<Response>): Promise<FlushResult> {
+  inFlight ??= sendAll(send).finally(() => {
+    inFlight = null
+  })
+  return inFlight
+}
+
+async function sendAll(send: (item: QueuedWrite) => Promise<Response>): Promise<FlushResult> {
   let sent = 0
   let dropped = 0
   for (const item of read()) {

@@ -138,7 +138,23 @@ def upcoming_reminders(user, horizon_days: int = 7):
             if day.weekday() in r.days_of_week and due > now:
                 out.append({"id": r.id, "kind": r.kind, "next_at": due, "channel": r.channel})
                 break
+    out.extend(_upcoming_appointments(user, now, horizon_days))
     return sorted(out, key=lambda x: x["next_at"])
+
+
+def _upcoming_appointments(user, now, horizon_days):
+    """The person's own care-calendar events that start soon, so the app can show them as reminders."""
+    from apps.family.models import CareEvent  # local import: the family app imports this module
+
+    end = now + timedelta(days=horizon_days)
+    events = CareEvent.objects.filter(patient=user, done_at__isnull=True, starts_at__gt=now, starts_at__lte=end)
+    return [
+        {
+            "id": e.id, "kind": "appointment", "next_at": e.starts_at, "channel": "in_app", "title": e.title,
+            "event_kind": e.kind, "location": e.location, "remind_minutes_before": e.remind_minutes_before,
+        }
+        for e in events.order_by("starts_at")[:20]
+    ]  # fmt: skip
 
 
 # --- Medicines and plain facts ------------------------------------------------------------------------------

@@ -2,7 +2,7 @@
      For people who find speaking hard. Tap a tile: the words fill the screen and the phone says them,
      using its own voice for the language when it has one. Everyday needs only. -->
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
   PhBed, PhChatCircleText, PhCheck, PhDrop, PhForkKnife, PhHandHeart, PhHandPalm, PhHandWaving, PhHourglass, PhMoon,
@@ -10,18 +10,24 @@ import {
 } from '@phosphor-icons/vue'
 
 import { api } from '@/api/client'
+import { useAuth } from '@/stores/auth'
 import DraftNote from '@/components/DraftNote.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import { useLoader } from '@/composables/useLoader'
 import { useSpeech } from '@/composables/useSpeech'
 
 const { t, locale } = useI18n()
+const auth = useAuth()
 const { data } = useLoader(() => api.get('/talk-board/', { lang: locale.value }))
+// The person's own phrases, added by them or their family. Only for signed-in patients.
+const mine = useLoader(() => (auth.isPatient ? api.get('/patients/me/phrases/') : Promise.resolve({ results: [] })))
 const { canSpeak, speak } = useSpeech()
 const tab = ref('needs')
 const shown = ref<any | null>(null)
-const tabs = ['needs', 'feelings', 'answers', 'people']
-const tiles = computed(() => (data.value?.results ?? []).filter((p: any) => p.category === tab.value))
+const tabs = computed(() => [...(auth.isPatient ? ['mine'] : []), 'needs', 'feelings', 'answers', 'people'])
+const myTiles = computed(() => (mine.data.value?.results ?? []).map((p: any) => ({ code: p.id, label: p.text, icon: p.icon, category: 'mine' })))
+const tiles = computed(() => (tab.value === 'mine' ? myTiles.value : (data.value?.results ?? []).filter((p: any) => p.category === tab.value)))
+watch(() => mine.data.value, (v: any) => { if (v?.results?.length && tab.value === 'needs') tab.value = 'mine' }, { once: true })
 
 // Only the icons the phrases use, so the app stays small on slow connections.
 const ICONS: Record<string, unknown> = {
@@ -41,7 +47,7 @@ function say(p: any) {
   <main class="page">
     <PageHeader :title="t('talk.title')" :subtitle="t('talk.lead')" />
     <div role="tablist" class="row">
-      <button v-for="c in tabs" :key="c" role="tab" class="sc-chip" :aria-selected="tab === c" :aria-pressed="tab === c" @click="tab = c">{{ t(`talk.cat.${c}`) }}</button>
+      <button v-for="c in tabs" :key="c" role="tab" class="sc-chip" :aria-selected="tab === c" :aria-pressed="tab === c" @click="tab = c">{{ c === 'mine' ? t('phrases.mine') : t(`talk.cat.${c}`) }}</button>
     </div>
     <div class="grid-2">
       <button v-for="(p, i) in tiles" :key="p.code" class="sc-card sc-rise pad stack" :style="{ animationDelay: `${Number(i) * 40}ms`, minHeight: '8.5rem', alignItems: 'flex-start', justifyContent: 'space-between', color: 'var(--ink)', cursor: 'pointer', textAlign: 'left' }" @click="say(p)">
@@ -49,6 +55,8 @@ function say(p: any) {
         <span style="font-size: 1.2rem; font-weight: 800; line-height: 1.2">{{ p.label }}</span>
       </button>
     </div>
+    <p v-if="tab === 'mine' && !tiles.length" class="muted">{{ t('phrases.none') }}</p>
+    <RouterLink v-if="auth.isPatient && tab === 'mine'" to="/p/me/phrases" class="sc-btn sc-btn-ghost">{{ t('phrases.manage') }}</RouterLink>
     <p class="tiny">{{ canSpeak ? t('talk.voiceOn') : t('talk.voiceOff') }}</p>
     <DraftNote />
 

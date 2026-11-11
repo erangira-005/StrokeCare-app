@@ -3,6 +3,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
 import { PhCaretRight, PhFunnel, PhKey, PhMagnifyingGlass } from '@phosphor-icons/vue'
 
 import { api } from '@/api/client'
@@ -11,7 +12,9 @@ import PageHeader from '@/components/PageHeader.vue'
 import { useLoader } from '@/composables/useLoader'
 
 const { t, locale } = useI18n()
-const needs = ref('')
+const route = useRoute()
+const allowed = ['urgent', 'no_check_in', 'doses_not_marked']
+const needs = ref(allowed.includes(String(route.query.needs)) ? String(route.query.needs) : '')
 const search = ref('')
 const { data, reload } = useLoader(() => api.get('/patients/', { needs: needs.value }))
 const rows = computed(() => (data.value ?? []).filter((p: any) => p.display_name.toLowerCase().includes(search.value.toLowerCase())))

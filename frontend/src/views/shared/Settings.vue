@@ -8,7 +8,10 @@ import {
   PhSignOut, PhSpeakerHigh, PhSun, PhTextAa, PhTrash, PhWifiSlash,
 } from '@phosphor-icons/vue'
 
+import { PhBellRinging, PhCloudArrowDown, PhUsersThree } from '@phosphor-icons/vue'
+
 import { api, errorText } from '@/api/client'
+import { copyEnabled, setCopyEnabled } from '@/api/copy'
 import PageHeader from '@/components/PageHeader.vue'
 import { toast } from '@/composables/useToast'
 import { LOCALES, setLocale, type Locale } from '@/i18n'
@@ -27,6 +30,11 @@ async function pick<K extends keyof Prefs>(key: K, value: Prefs[K]) {
   } catch (e) {
     toast(errorText(e))
   }
+}
+function toggleCopy() {
+  const turningOff = copyEnabled.value
+  setCopyEnabled(!copyEnabled.value)
+  if (turningOff) toast(t('settings.offlineCopyRemoved'))
 }
 async function language(code: Locale) {
   setLocale(code)
@@ -98,7 +106,19 @@ const switches: { key: keyof Prefs; icon: unknown }[] = [
       </button>
     </section>
 
+    <section v-if="auth.isPatient" class="sc-card" style="padding: 0.25rem 1rem">
+      <button role="switch" :aria-checked="copyEnabled" class="row full" style="flex-wrap: nowrap; min-height: 4rem; padding: 0.5rem 0; border: 0; background: transparent; text-align: left; cursor: pointer; color: var(--ink)" @click="toggleCopy">
+        <span class="sc-iconbox" style="width: 2.6rem; height: 2.6rem"><PhCloudArrowDown :size="22" /></span>
+        <span class="stack-s" style="flex-grow: 1"><strong>{{ t('settings.offlineCopy') }}</strong><span class="tiny">{{ t('settings.offlineCopyHint') }}</span></span>
+        <span :style="{ width: '3.25rem', height: '1.9rem', borderRadius: '1rem', background: copyEnabled ? 'var(--primary)' : 'var(--line-strong)', position: 'relative', flexShrink: 0, transition: 'background-color .2s' }">
+          <span :style="{ position: 'absolute', top: '0.2rem', left: copyEnabled ? '1.55rem' : '0.2rem', width: '1.5rem', height: '1.5rem', borderRadius: '50%', background: '#fff', transition: 'left .2s' }"></span>
+        </span>
+      </button>
+    </section>
+
     <template v-if="auth.signedIn">
+      <RouterLink v-if="auth.isPatient" to="/reminders" class="sc-btn sc-btn-ghost"><PhBellRinging :size="22" />{{ t('reminders.title') }}</RouterLink>
+      <RouterLink v-if="auth.isPatient" to="/care-team" class="sc-btn sc-btn-ghost"><PhUsersThree :size="22" />{{ t('team.title') }}</RouterLink>
       <RouterLink v-if="auth.role !== 'admin'" to="/sharing" class="sc-btn sc-btn-ghost"><PhShareNetwork :size="22" />{{ t('sharing.title') }}</RouterLink>
       <button class="sc-btn sc-btn-ghost" @click="exportData"><PhDownloadSimple :size="22" />{{ t('settings.export') }}</button>
       <button class="sc-btn sc-btn-ghost" @click="signOut"><PhSignOut :size="22" />{{ t('auth.signOut') }}</button>

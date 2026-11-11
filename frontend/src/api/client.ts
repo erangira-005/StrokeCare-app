@@ -1,6 +1,7 @@
 // Owner: Emmanuel Happy Rangira (Frontend developer) · AI-assisted draft, see AI_USE_LOG.md
 // One way to talk to the API: adds the token, refreshes it once when it expires, turns errors into plain sentences,
 // and queues a few kinds of entries when the phone is offline so nothing typed is lost.
+import { readCopy, saveCopy, showingCopy } from './copy'
 import { enqueue } from './offline'
 
 export const API_BASE: string = import.meta.env.VITE_API_URL ?? '/api/v1'
@@ -91,7 +92,7 @@ export interface RequestOptions {
   body?: unknown
   query?: Record<string, string | number | boolean | undefined | null>
   form?: FormData
-  /** Queue this write if the phone is offline (check-ins, readings, doses, home visits). */
+  /** Queue this write if the phone is offline (check-ins, readings, doses, movement, home visits). */
   queueable?: boolean
   /** Return the raw Response (for downloads and audio). */
   raw?: boolean
@@ -120,6 +121,13 @@ export async function request<T = any>(method: string, path: string, opts: Reque
   try {
     response = await fetch(buildUrl(path, opts.query), { method, headers, body })
   } catch (err) {
+    if (method === 'GET' && !opts.raw) {
+      const copy = readCopy(path, opts.query) // only when the person turned on "keep my plan on this phone"
+      if (copy !== null) {
+        showingCopy.value = true
+        return copy as T
+      }
+    }
     if (opts.queueable && method !== 'GET') {
       enqueue({ method, path, body: opts.body })
       return { queued: true } as T
@@ -135,6 +143,10 @@ export async function request<T = any>(method: string, path: string, opts: Reque
   if (opts.raw && response.ok) return response as unknown as T
   if (response.status === 204) return undefined as T
   const data = await response.json().catch(() => ({}))
+  if (response.ok && method === 'GET') {
+    showingCopy.value = false
+    saveCopy(path, opts.query, data)
+  }
   if (!response.ok) {
     const e = data?.error ?? {}
     throw new ApiError(response.status, e.code ?? 'error', e.message ?? 'Something went wrong.', e.fields ?? {})

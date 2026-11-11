@@ -18,7 +18,7 @@ import django  # noqa: E402
 django.setup()
 from django.apps import apps  # noqa: E402
 
-OURS = {"accounts", "care", "health", "content", "audit"}
+OURS = {"accounts", "care", "health", "content", "audit", "messaging", "family", "community", "recovery"}
 print("erDiagram")
 for model in apps.get_models():
     if model._meta.app_label not in OURS:

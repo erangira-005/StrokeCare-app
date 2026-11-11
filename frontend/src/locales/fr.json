@@ -10,7 +10,11 @@
     "talk": "Parler",
     "caseload": "Patients",
     "templates": "Modèles",
-    "visits": "Visites"
+    "visits": "Visites",
+    "doctor": "Aperçu",
+    "recovery": "Récupération",
+    "progress": "Suivi",
+    "team": "Équipe de soins"
   },
   "common": {
     "back": "Retour",
@@ -95,7 +99,11 @@
     "quick": "Actions rapides",
     "plan": "Le plan du jour",
     "fromClinician": "De votre soignant",
-    "unread": "{n} nouveaux messages de votre équipe de soins"
+    "unread": "{n} nouveaux messages de votre équipe de soins",
+    "stage": "Votre étape : {name}",
+    "comingUp": "À venir",
+    "more": "Plus pour votre récupération",
+    "movementLine": "{n} minutes aujourd'hui"
   },
   "checkin": {
     "title": "Suivi du jour",
@@ -107,7 +115,8 @@
     "send": "Envoyer",
     "thanks": "Merci. Votre suivi est enregistré.",
     "yourWords": "Avec vos mots",
-    "source": "suivi de l'équipe"
+    "source": "suivi de l'équipe",
+    "oneScreen": "Répondez à ce que vous voulez et passez le reste. Ce qui reste vide est envoyé comme passé."
   },
   "emergency": {
     "button": "Urgence",
@@ -152,7 +161,19 @@
     "marked": "Noté par {who}",
     "mark": "Noter comme pris",
     "undo": "Noté comme pris. Touchez pour annuler.",
-    "onlyClinician": "Seul votre soignant peut modifier cette liste. Si quelque chose semble faux, ajoutez-le à"
+    "onlyClinician": "Seul votre soignant peut modifier cette liste. Si quelque chose semble faux, ajoutez-le à",
+    "periods": {
+      "morning": "Matin",
+      "afternoon": "Après-midi",
+      "evening": "Soir",
+      "night": "Nuit"
+    },
+    "markAll": "Tout marquer comme pris",
+    "markedAll": "{n} prises marquées.",
+    "courseFromTo": "Du {from} au {to}",
+    "courseFrom": "Depuis le {from}, sans date de fin",
+    "next": "Prochaine : {time}, {name}",
+    "allDone": "Toutes les prises d'aujourd'hui sont marquées."
   },
   "talk": {
     "title": "Tableau de parole",
@@ -231,7 +252,18 @@
       "visit": "Visite",
       "other": "Autre"
     },
-    "handoverAdd": "Ajouter la note"
+    "handoverAdd": "Ajouter la note",
+    "remind": "Nous le rappeler",
+    "remindNone": "Pas de rappel",
+    "remindOptions": {
+      "15": "15 minutes avant",
+      "30": "30 minutes avant",
+      "60": "1 heure avant",
+      "120": "2 heures avant",
+      "1440": "1 jour avant",
+      "2880": "2 jours avant"
+    },
+    "reminderSet": "Rappel : {when}"
   },
   "care": {
     "caringFor": "Vous aidez",
@@ -250,7 +282,8 @@
   "alerts": {
     "urgent_answer": "{name} a répondu Oui à la question urgente du suivi ({date}).",
     "no_check_in": "{name} n'a pas fait de suivi depuis {days} jours.",
-    "doses_not_marked": "{count} prises n'ont pas été notées comme prises par {name} hier."
+    "doses_not_marked": "{count} prises n'ont pas été notées comme prises par {name} hier.",
+    "appointment_soon": "{title} pour {name} commence {when}."
   },
   "caseload": {
     "title": "Vos patients",
@@ -365,6 +398,11 @@
       "pending": "En attente",
       "active": "Actif",
       "revoked": "Terminé"
+    },
+    "more": {
+      "caregiver": "Cette personne peut aussi voir et compléter votre journal des mouvements, vos objectifs et vos phrases personnelles.",
+      "clinician": "Cette personne peut aussi voir votre journal des mouvements et vos objectifs, et écrire vos étapes de récupération.",
+      "chw": "Cette personne peut aussi voir et compléter votre journal des mouvements, vos objectifs et vos phrases personnelles."
     }
   },
   "settings": {
@@ -408,12 +446,165 @@
       "one_question_at_a_time": "Un suivi plus calme avec de grands boutons",
       "one_handed_layout": "Les boutons principaux restent sous le pouce",
       "low_data_mode": "Texte seulement, sans vidéo"
-    }
+    },
+    "offlineCopy": "Garder mon plan sur ce téléphone",
+    "offlineCopyHint": "Permet de voir votre plan, vos médicaments, vos rendez-vous et vos phrases sans connexion. Cela reste sur ce téléphone jusqu'à la déconnexion : activez-le seulement sur un téléphone qui n'est qu'à vous.",
+    "offlineCopyRemoved": "La copie enregistrée a été supprimée de ce téléphone."
   },
   "offline": {
     "notice": "Vous êtes hors ligne. Ce que vous saisissez est gardé et envoyé plus tard.",
     "pending": "{n} saisies en attente d'envoi.",
     "saved": "Enregistré sur ce téléphone. Envoyé dès que vous serez en ligne.",
-    "sendNow": "Envoyer {n} saisies en attente"
+    "sendNow": "Envoyer {n} saisies en attente",
+    "copyShown": "Vous êtes hors ligne. Affichage de la dernière copie enregistrée sur ce téléphone."
+  },
+  "recovery": {
+    "title": "Ma récupération",
+    "titleOther": "Récupération",
+    "lead": "Votre étape, vos objectifs et vos mouvements au même endroit.",
+    "stage": "Étape actuelle",
+    "noStage": "Votre soignant n'a pas encore défini d'étape.",
+    "noStageOther": "Aucune étape n'a encore été définie.",
+    "stageFrom": "Défini par le soignant",
+    "careNeeded": "Soins et aide nécessaires",
+    "since": "Depuis le {from}",
+    "range": "Du {from} au {to}",
+    "goals": "Mes objectifs",
+    "goalsOther": "Objectifs",
+    "goalLead": "Que voulez-vous pouvoir faire ? Écrivez-le avec vos mots.",
+    "goalPlaceholder": "ex. Marcher jusqu'au portail",
+    "goalDate": "Pour quand (facultatif)",
+    "goalAdd": "Ajouter l'objectif",
+    "goalNone": "Aucun objectif pour l'instant.",
+    "goalDone": "Fait",
+    "goalMark": "Marquer comme fait",
+    "goalUnmark": "Pas encore fait",
+    "goalWish": "Un souhait, pas une échéance."
+  },
+  "mobility": {
+    "title": "Mouvement",
+    "lead": "Notez comment vous avez bougé. Il n'y a pas de bonne quantité.",
+    "leadOther": "Notez comment cette personne a bougé. Il n'y a pas de bonne quantité.",
+    "what": "Qu'avez-vous fait ?",
+    "kinds": {
+      "walking": "Marche",
+      "standing": "Se tenir debout",
+      "stretching": "Étirements ou exercices",
+      "wheelchair": "Fauteuil roulant",
+      "other": "Autre"
+    },
+    "helpQ": "Comment cela s'est-il passé ?",
+    "help": {
+      "alone": "Seul(e)",
+      "with_aid": "Avec une canne, un déambulateur ou une autre aide",
+      "with_person": "Avec l'aide d'une autre personne"
+    },
+    "minutes": "Minutes (facultatif)",
+    "min": "{n} min",
+    "repeat": "Comme la dernière fois",
+    "repeatHint": "Ajoute de nouveau {what}, pour aujourd'hui.",
+    "added": "Ajouté.",
+    "none": "Rien de noté pour l'instant.",
+    "week": "7 derniers jours",
+    "entries": "{n} entrée | {n} entrées",
+    "total": "{n} minutes au total"
+  },
+  "progress": {
+    "title": "Suivi des progrès",
+    "lead": "Ce qui a été noté, jour après jour. Ce sont des comptes, pas une note.",
+    "range": "{n} jours",
+    "tasks": "Tâches du plan cochées",
+    "doses": "Prises marquées comme prises",
+    "minutes": "Minutes de mouvement",
+    "totals": "Totaux sur {n} jours",
+    "day": "Jour",
+    "table": "Jour par jour",
+    "checked": "Suivi fait",
+    "chart": "Les barres montrent les comptes de chaque jour. Les mêmes chiffres sont dans le tableau ci-dessous.",
+    "chartLabel": "Diagramme en barres : {what}, {n} derniers jours",
+    "openMovement": "Ouvrir le journal des mouvements",
+    "colTasks": "Tâches",
+    "colDoses": "Prises",
+    "colMinutes": "Minutes"
+  },
+  "phase": {
+    "title": "Étapes de la récupération",
+    "lead": "Nommez chaque étape de la récupération de cette personne avec vos mots. L'étape actuelle apparaît sur son écran Aujourd'hui.",
+    "add": "Ajouter une étape",
+    "name": "Nom de l'étape",
+    "from": "Commence le",
+    "to": "Se termine le (facultatif)",
+    "now": "En ce moment",
+    "none": "Aucune étape pour l'instant.",
+    "confirmDelete": "Supprimer cette étape ?"
+  },
+  "team": {
+    "title": "Mon équipe de soins",
+    "lead": "Ces personnes peuvent voir vos dossiers, parce que vous avez choisi de les partager.",
+    "none": "Personne pour l'instant. Partagez un code pour inviter quelqu'un.",
+    "since": "Depuis le {date}",
+    "message": "Écrire",
+    "manage": "Gérer le partage",
+    "next": "Votre prochain rendez-vous",
+    "noNext": "Aucun rendez-vous à venir."
+  },
+  "doctor": {
+    "hello": "Bonjour, {name}",
+    "people": "{n} personne partage avec vous | {n} personnes partagent avec vous",
+    "glance": "En un coup d'œil",
+    "needs": "Personnes à regarder",
+    "needsLead": "Faits saisis par eux. Classés par nom, pas par importance.",
+    "reasons": {
+      "urgent": "A répondu Oui à la question urgente cette semaine",
+      "no_check_in": "Pas de suivi depuis 2 jours ou plus",
+      "doses_not_marked": "Prises non marquées hier",
+      "unread_messages": "Messages non lus"
+    },
+    "none": "Rien à regarder pour le moment.",
+    "today": "Rendez-vous d'aujourd'hui",
+    "noToday": "Aucun rendez-vous aujourd'hui.",
+    "next": "À venir cette semaine",
+    "openCaseload": "Ouvrir la liste des patients"
+  },
+  "reminders": {
+    "title": "Rappels",
+    "lead": "Les rappels s'affichent dans l'application. Les alertes par SMS ou notification ne sont pas encore disponibles.",
+    "upcoming": "À venir",
+    "none": "Aucun rappel défini.",
+    "add": "Ajouter un rappel",
+    "kind": "Pour quoi",
+    "kinds": {
+      "tasks": "Tâches du plan de récupération",
+      "blood_pressure": "Mesure de la tension",
+      "checkin": "Suivi du jour",
+      "medicines": "Prises de médicaments",
+      "mobility": "Mouvement"
+    },
+    "at": "À",
+    "days": "Jours",
+    "everyDay": "Tous les jours",
+    "active": "Activé",
+    "inactive": "Désactivé"
+  },
+  "phrases": {
+    "title": "Mes propres phrases",
+    "titleOther": "Phrases personnelles",
+    "lead": "Ajoutez les mots dont cette personne a le plus besoin. Ils apparaissent en premier sur le tableau de parole.",
+    "add": "Ajouter une phrase",
+    "placeholder": "ex. Appelez ma fille, s'il vous plaît",
+    "picture": "Image",
+    "none": "Aucune phrase personnelle pour l'instant.",
+    "mine": "Les miennes",
+    "manage": "Ajouter ou retirer mes phrases",
+    "icons": {
+      "chat-circle": "Parler",
+      "drop": "Eau",
+      "fork-knife": "Nourriture",
+      "toilet": "Toilettes",
+      "bed": "Repos",
+      "hand-heart": "Aide",
+      "phone-call": "Appeler",
+      "users-three": "Famille"
+    }
   }
 }

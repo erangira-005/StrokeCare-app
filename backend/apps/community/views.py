@@ -1,7 +1,7 @@
 """Owner: Aubin Axel Mfura (Backend and database) · AI-assisted draft, see AI_USE_LOG.md"""
 from datetime import timedelta
 
-from django.db import transaction
+from django.db import IntegrityError, transaction
 from django.utils import timezone
 from rest_framework import serializers, status
 from rest_framework.permissions import AllowAny
@@ -84,17 +84,25 @@ class HomeVisitsView(PatientScopedMixin, APIView):
             if existing.patient_id != self.access.subject.id or existing.chw_id != request.user.id:
                 raise serializers.ValidationError({"client_id": ["This visit id is already used."]})
             return Response(_row(existing), status=status.HTTP_200_OK)  # sent twice from the phone: harmless
-        with transaction.atomic():
-            reading = None
-            if "systolic" in d:
-                rs = ReadingSerializer(data={
-                    "systolic": d["systolic"], "diastolic": d["diastolic"], "pulse": d.get("pulse"),
-                    "taken_at": d["visited_at"], "context": "other", "note": "Home visit",
-                })  # fmt: skip
-                rs.is_valid(raise_exception=True)
-                reading = rs.save(user=self.access.subject, entered_by=request.user)
-            visit = HomeVisit.objects.create(
-                client_id=d["client_id"], patient=self.access.subject, chw=request.user, visited_at=d["visited_at"],
-                checklist=d["checklist"], note=d["note"], reading=reading,
-            )  # fmt: skip
+        try:
+            with transaction.atomic():
+                reading = None
+                if "systolic" in d:
+                    rs = ReadingSerializer(data={
+                        "systolic": d["systolic"], "diastolic": d["diastolic"], "pulse": d.get("pulse"),
+                        "taken_at": d["visited_at"], "context": "other", "note": "Home visit",
+                    })  # fmt: skip
+                    rs.is_valid(raise_exception=True)
+                    reading = rs.save(user=self.access.subject, entered_by=request.user)
+                visit = HomeVisit.objects.create(
+                    client_id=d["client_id"], patient=self.access.subject, chw=request.user, visited_at=d["visited_at"],
+                    checklist=d["checklist"], note=d["note"], reading=reading,
+                )  # fmt: skip
+        except IntegrityError:
+            # The same visit was sent twice at the same moment and the other request won. The whole attempt (including
+            # its blood pressure reading) was rolled back, so there is still exactly one visit and one reading.
+            existing = HomeVisit.objects.filter(client_id=d["client_id"]).select_related("chw", "reading").first()
+            if existing is None or existing.patient_id != self.access.subject.id or existing.chw_id != request.user.id:
+                raise
+            return Response(_row(existing), status=status.HTTP_200_OK)
         return Response(_row(visit), status=status.HTTP_201_CREATED)

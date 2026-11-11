@@ -125,6 +125,17 @@ class MedicationDetailView(PatientScopedMixin, APIView):
         return Response(ser.data)
 
 
+def check_dose_slot(subject, med, day, time):
+    """A dose can be marked only for a day that has happened, not too long ago, and at a scheduled time."""
+    today = services.local_today(subject)
+    if day > today:
+        raise ValidationError({"date": ["This day has not happened yet."]})
+    if day < today - timedelta(days=BACKFILL_DAYS):
+        raise ValidationError({"date": [f"Doses can be marked up to {BACKFILL_DAYS} days late."]})
+    if time not in med.scheduled_on(day):
+        raise ValidationError({"time": ["This medicine is not scheduled at that time on that day."]})
+
+
 class DoseInSerializer(serializers.Serializer):
     date = serializers.DateField(required=False)
     time = serializers.TimeField()
@@ -140,13 +151,7 @@ class DoseView(PatientScopedMixin, APIView):
         med = Medication.objects.filter(id=med_id, patient=subject).first()
         if med is None:
             raise Http404
-        today = services.local_today(subject)
-        if day > today:
-            raise ValidationError({"date": ["This day has not happened yet."]})
-        if day < today - timedelta(days=BACKFILL_DAYS):
-            raise ValidationError({"date": [f"Doses can be marked up to {BACKFILL_DAYS} days late."]})
-        if time not in med.scheduled_on(day):
-            raise ValidationError({"time": ["This medicine is not scheduled at that time on that day."]})
+        check_dose_slot(subject, med, day, time)
         return med
 
     def post(self, request, patient_ref, med_id):
@@ -316,3 +321,38 @@ class ApplyTemplateView(PatientScopedMixin, APIView):
             ]
         audit(request, "plan.template_applied", subject=subject, template=str(tpl.id), tasks=len(created))
         return Response({"added": len(created)}, status=status.HTTP_201_CREATED)
+
+
+class BulkDoseItemSerializer(serializers.Serializer):
+    medication = serializers.UUIDField()
+    time = serializers.TimeField()
+
+
+class BulkDoseInSerializer(serializers.Serializer):
+    date = serializers.DateField(required=False)
+    doses = BulkDoseItemSerializer(many=True, allow_empty=False, max_length=50)
+
+
+class BulkDoseView(PatientScopedMixin, APIView):
+    """Mark several scheduled doses as taken in one go ("all of this morning's medicines"). All or nothing."""
+
+    scope_by_method = {"POST": scopes.LOG_MEDS}
+
+    @transaction.atomic
+    def post(self, request, patient_ref):
+        subject = self.access.subject
+        ser = BulkDoseInSerializer(data=request.data)
+        ser.is_valid(raise_exception=True)
+        day = ser.validated_data.get("date") or services.local_today(subject)
+        meds = {m.id: m for m in Medication.objects.filter(patient=subject)}
+        marked = 0
+        for item in ser.validated_data["doses"]:
+            med = meds.get(item["medication"])
+            if med is None:
+                raise ValidationError({"doses": ["One of these medicines is not on this person's list."]})
+            check_dose_slot(subject, med, day, item["time"])
+            _, created = MedicationDose.objects.get_or_create(
+                medication=med, date=day, time=item["time"], defaults={"entered_by": request.user}
+            )
+            marked += created
+        return Response({"date": day, "newly_marked": marked, "requested": len(ser.validated_data["doses"])})

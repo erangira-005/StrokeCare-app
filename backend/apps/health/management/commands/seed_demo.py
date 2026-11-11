@@ -111,6 +111,7 @@ class Command(BaseCommand):
                 CheckInAnswer.objects.create(checkin=ci, question=q, value=value, skipped=value is None)
 
         VisitQuestion.objects.create(patient=survivor, text="Demo question: can I walk outside on my own?", entered_by=survivor)
+        self._seed_recovery(survivor, users, today, rng, now)
         PlanTemplate.objects.create(
             owner=users["clinician"], name="Demo template", tasks=[{"title": "Demo task D", "instructions": "Fictional."}]
         )
@@ -125,3 +126,33 @@ class Command(BaseCommand):
         self.stdout.write(f"Password for all demo accounts: {password}")
         for email, *_ in DEMO.values():
             self.stdout.write(f"  {email}")
+
+    def _seed_recovery(self, survivor, users, today, rng, now):
+        """Fictional goals, a recovery stage, movement entries, personal phrases and a reminder for the demo."""
+        from datetime import timedelta as td
+
+        from apps.family.models import CareEvent
+        from apps.recovery.models import CarePhase, CustomPhrase, Goal, MobilityLog
+
+        Goal.objects.create(patient=survivor, text="Demo goal: walk to the gate on my own", entered_by=survivor)
+        Goal.objects.create(patient=survivor, text="Demo goal: hold a cup with both hands", entered_by=survivor, done_at=now)
+        CarePhase.objects.create(
+            patient=survivor, name="Demo stage: early weeks at home", starts_on=today - td(days=30), ends_on=today - td(days=1),
+            care_needed="Fictional example text written by the demo clinician.", created_by=users["clinician"],
+        )  # fmt: skip
+        CarePhase.objects.create(
+            patient=survivor, name="Demo stage: building up", starts_on=today,
+            care_needed="Fictional example: help is needed in the mornings and evenings.", created_by=users["clinician"],
+        )  # fmt: skip
+        for days_ago in range(10):
+            if rng.random() < 0.7:
+                MobilityLog.objects.create(
+                    patient=survivor, date=today - td(days=days_ago), kind=rng.choice(["walking", "stretching", "standing"]),
+                    minutes=rng.choice([5, 10, 15, 20]), help=rng.choice(["alone", "with_aid", "with_person"]), entered_by=survivor,
+                )  # fmt: skip
+        CustomPhrase.objects.create(patient=survivor, text="Demo phrase: please call my daughter", icon="phone-call", entered_by=survivor)
+        CareEvent.objects.create(
+            patient=survivor, title="Demo appointment: clinic visit", kind="appointment",
+            starts_at=now + td(days=1, hours=2), location="Demo clinic (fictional)", remind_minutes_before=1440,
+            created_by=users["clinician"],
+        )  # fmt: skip

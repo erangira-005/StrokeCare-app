@@ -28,6 +28,9 @@ class CareEvent(models.Model):
     ends_at = models.DateTimeField(null=True, blank=True)
     location = models.CharField(max_length=120, blank=True)
     notes = models.CharField(max_length=500, blank=True)
+    remind_minutes_before = models.PositiveIntegerField(
+        null=True, blank=True, help_text="Remind the person and their family this many minutes before it starts."
+    )
     assigned_to = models.ForeignKey(
         settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL, related_name="assigned_care_events"
     )

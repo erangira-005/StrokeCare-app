@@ -2,7 +2,10 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PhCalendarCheck, PhChatCircleText, PhCheck, PhClipboardText, PhHeartbeat, PhPill } from '@phosphor-icons/vue'
+import {
+  PhBellRinging, PhCalendarCheck, PhChartBar, PhChatCircleText, PhCheck, PhClipboardText, PhHeartbeat, PhPersonSimpleWalk, PhPill, PhTarget,
+  PhUsersThree,
+} from '@phosphor-icons/vue'
 
 import { api, errorText } from '@/api/client'
 import ProgressRing from '@/components/ProgressRing.vue'
@@ -15,7 +18,8 @@ const plan = ref<any>(null)
 const meds = ref<any>(null)
 const lastCheckin = ref<any>(null)
 const lastReading = ref<any>(null)
-const nextEvent = ref<any>(null)
+const stage = ref<any>(null)
+const comingUp = ref<any[]>([])
 const unread = ref(0)
 const loaded = ref(false)
 
@@ -25,15 +29,19 @@ async function load() {
     api.get('/patients/me/medications/'),
     api.get('/patients/me/checkins/', { limit: 1 }),
     api.get('/patients/me/readings/', { limit: 1 }),
-    api.get('/patients/me/calendar/'),
+    api.get('/patients/me/phases/'),
+    api.get('/me/reminders/upcoming/'),
     api.get('/inbox/'),
   ])
-  const [p, m, c, r, cal, inbox] = results.map((x) => (x.status === 'fulfilled' ? x.value : null))
+  const [p, m, c, r, ph, up, inbox] = results.map((x) => (x.status === 'fulfilled' ? x.value : null))
   plan.value = p ?? { has_plan: false, tasks: [] }
   meds.value = m
   lastCheckin.value = c?.results?.[0] ?? null
   lastReading.value = r?.results?.[0] ?? null
-  nextEvent.value = (cal?.results ?? []).find((e: any) => !e.is_done && new Date(e.starts_at) > new Date()) ?? null
+  stage.value = (ph?.results ?? []).find((x: any) => x.is_current) ?? null
+  // the next few things in the next 36 hours: appointments and reminders, soonest first
+  const horizon = Date.now() + 36 * 3600 * 1000
+  comingUp.value = (up?.results ?? []).filter((u: any) => new Date(u.next_at).getTime() <= horizon).slice(0, 4)
   unread.value = inbox?.results?.[0]?.unread ?? 0
   loaded.value = true
 }
@@ -103,11 +111,25 @@ async function tick(task: any) {
       </RouterLink>
     </nav>
 
-    <RouterLink v-if="nextEvent" to="/p/me/calendar" class="sc-card pad row" style="text-decoration: none; color: var(--ink)">
-      <span class="sc-iconbox"><PhCalendarCheck :size="26" weight="duotone" /></span>
-      <span class="stack-s"><strong>{{ nextEvent.title }}</strong><span class="small muted">{{ new Date(nextEvent.starts_at).toLocaleString(locale, { dateStyle: 'medium', timeStyle: 'short' }) }}</span></span>
-    </RouterLink>
+    <RouterLink v-if="stage" to="/p/me/recovery" class="banner" style="text-decoration: none; color: var(--ink)"><PhTarget :size="22" />{{ t('today.stage', { name: stage.name }) }}</RouterLink>
+    <section v-if="comingUp.length" class="stack-s" :aria-label="t('today.comingUp')">
+      <h2 class="sc-eyebrow" style="font-size: 0.85rem">{{ t('today.comingUp') }}</h2>
+      <RouterLink v-for="u in comingUp" :key="u.id" :to="u.kind === 'appointment' ? '/p/me/calendar' : '/reminders'" class="sc-card pad row" style="text-decoration: none; color: var(--ink)">
+        <span class="sc-iconbox"><component :is="u.kind === 'appointment' ? PhCalendarCheck : PhBellRinging" :size="26" weight="duotone" /></span>
+        <span class="stack-s"><strong>{{ u.kind === 'appointment' ? u.title : t(`reminders.kinds.${u.kind}`) }}</strong><span class="small muted">{{ new Date(u.next_at).toLocaleString(locale, { weekday: 'short', hour: '2-digit', minute: '2-digit' }) }}</span></span>
+      </RouterLink>
+    </section>
     <RouterLink v-if="unread" to="/p/me/messages" class="banner" style="text-decoration: none; color: var(--ink)"><PhChatCircleText :size="22" />{{ t('today.unread', { n: unread }) }}</RouterLink>
+
+    <nav class="stack-s" :aria-label="t('today.more')">
+      <h2 class="sc-eyebrow" style="font-size: 0.85rem">{{ t('today.more') }}</h2>
+      <div class="grid-2">
+        <RouterLink to="/p/me/recovery" class="sc-card pad row" style="text-decoration: none; color: var(--ink)"><PhTarget :size="24" weight="duotone" /><strong>{{ t('recovery.title') }}</strong></RouterLink>
+        <RouterLink to="/p/me/mobility" class="sc-card pad row" style="text-decoration: none; color: var(--ink)"><PhPersonSimpleWalk :size="24" weight="duotone" /><strong>{{ t('mobility.title') }}</strong></RouterLink>
+        <RouterLink to="/p/me/progress" class="sc-card pad row" style="text-decoration: none; color: var(--ink)"><PhChartBar :size="24" weight="duotone" /><strong>{{ t('progress.title') }}</strong></RouterLink>
+        <RouterLink to="/care-team" class="sc-card pad row" style="text-decoration: none; color: var(--ink)"><PhUsersThree :size="24" weight="duotone" /><strong>{{ t('team.title') }}</strong></RouterLink>
+      </div>
+    </nav>
 
     <section v-if="plan?.has_plan" class="stack sc-rise" style="animation-delay: 280ms">
       <div class="row-between"><h2>{{ t('today.plan') }}</h2><span class="sc-eyebrow">{{ t('today.fromClinician') }}</span></div>

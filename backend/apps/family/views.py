@@ -28,15 +28,20 @@ def care_team(patient) -> list[dict]:
     return team
 
 
+REMIND_CHOICES = [15, 30, 60, 120, 1440, 2880]  # minutes before: 15 min, 30 min, 1 h, 2 h, 1 day, 2 days
+
+
 class CareEventSerializer(serializers.ModelSerializer):
     assigned_to = serializers.UUIDField(source="assigned_to_id", required=False, allow_null=True)
     assigned_to_name = serializers.SerializerMethodField()
     done = serializers.BooleanField(required=False, write_only=True)
+    remind_minutes_before = serializers.ChoiceField(choices=REMIND_CHOICES, required=False, allow_null=True)
     is_done = serializers.SerializerMethodField()
 
     class Meta:
         model = CareEvent
-        fields = ["id", "title", "kind", "starts_at", "ends_at", "location", "notes", "assigned_to", "assigned_to_name",
+        fields = ["id", "title", "kind", "starts_at", "ends_at", "location", "notes", "remind_minutes_before", "assigned_to",
+                  "assigned_to_name",
                   "done", "is_done", "done_at", "created_at"]  # fmt: skip
         read_only_fields = ["id", "done_at", "created_at"]
 

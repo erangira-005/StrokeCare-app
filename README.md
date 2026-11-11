@@ -15,6 +15,7 @@ Team 3 · Foundations Project · ALU. Version 2: the first prototype lived in `E
 | Caregivers | Alerts (urgent answer, doses not marked, no check-in), act on the person's behalf, family care calendar with handover notes, messages |
 | Clinicians | Caseload with "needs a look" filters (facts only), seven-day summary, write the recovery plan and medicine list, plan templates, listen to voice notes, messages |
 | Community health workers | People who invited them, home visits recorded offline and sent later, readings during visits |
+| New in this version | Personal recovery (stage named by the clinician, own goals), movement tracker, progress dashboard (counts, no scores), appointment reminders, medicines grouped by time of day with one-tap "mark all", personal talk-board phrases, a one-screen check-in, an optional offline copy of the plan, a doctor home page and a "my care team" page |
 | Everyone, signed in or not | Emergency help, talk board, education |
 
 ## Stack

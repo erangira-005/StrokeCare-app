@@ -47,9 +47,15 @@ def test_no_judgement_field_in_any_patient_response(world):
     c.post(f"{ME}/readings/", {"systolic": 180, "diastolic": 110}, format="json")  # a high-looking number
     RecoveryPlan.objects.create(patient=world.survivor)
     c.post(f"{ME}/checkins/", {"answers": [{"question": "new-or-worse-symptoms", "value": True}]}, format="json")
+    c.post(f"{ME}/mobility/", {"kind": "walking", "minutes": 10}, format="json")
+    c.post(f"{ME}/goals/", {"text": "Walk to the gate"}, format="json")
+    c.post(f"{ME}/phrases/", {"text": "I am thirsty"}, format="json")
     clin = client_for(world.clinician)
     base = f"/api/v1/patients/{world.survivor.id}"
+    clin.post(f"{base}/phases/", {"name": "Building up", "starts_on": "2026-11-01"}, format="json")
     responses = [
+        c.get(f"{ME}/mobility/"), c.get(f"{ME}/goals/"), c.get(f"{ME}/phases/"), c.get(f"{ME}/phrases/"),
+        c.get(f"{ME}/progress/"), c.get("/api/v1/me/care-team/"), clin.get("/api/v1/doctor/overview/"),
         c.get(f"{ME}/readings/"), c.get(f"{ME}/plan/"), c.get(f"{ME}/checkins/"), c.get(f"{ME}/summary/"),
         c.get("/api/v1/checkin-questions/"), c.get("/api/v1/emergency/"),
         clin.get(f"{base}/summary/"), clin.get(f"{base}/readings/"),
@@ -62,8 +68,10 @@ def test_no_judgement_field_in_any_patient_response(world):
 def test_no_judgement_field_in_the_database_models():
     from apps.care.models import Alert
     from apps.health.models import Medication, MedicationDose
+    from apps.recovery.models import CarePhase, CustomPhrase, Goal, MobilityLog
 
-    for model in (BPReading, CheckIn, PlanTask, RecoveryPlan, Medication, MedicationDose, Alert):
+    for model in (BPReading, CheckIn, PlanTask, RecoveryPlan, Medication, MedicationDose, Alert,
+                  Goal, CarePhase, MobilityLog, CustomPhrase):
         assert judgement_words({f.name for f in model._meta.get_fields()}) == set(), model.__name__
 
 

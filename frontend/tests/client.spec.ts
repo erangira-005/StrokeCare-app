@@ -67,3 +67,21 @@ describe('offline outbox', () => {
     expect(pendingCount.value).toBe(1) // the third waits for the next connection
   })
 })
+
+describe('offline sync', () => {
+  it('sends each waiting entry once even if two syncs start together', async () => {
+    const { enqueue } = await import('../src/api/offline')
+    enqueue({ method: 'POST', path: '/patients/me/mobility/', body: { kind: 'walking' } })
+    enqueue({ method: 'POST', path: '/patients/me/mobility/', body: { kind: 'standing' } })
+    let sent = 0
+    const send = async () => {
+      sent++
+      await new Promise((r) => setTimeout(r, 10)) // slow enough that the second sync starts while the first is running
+      return new Response('{}', { status: 201 })
+    }
+    const [a, b] = await Promise.all([flush(send), flush(send)])
+    expect(sent).toBe(2)
+    expect(a).toEqual(b)
+    expect(pendingCount.value).toBe(0)
+  })
+})

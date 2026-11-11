@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "apps.messaging",
     "apps.family",
     "apps.community",
+    "apps.recovery",
 ]
 
 MIDDLEWARE = [

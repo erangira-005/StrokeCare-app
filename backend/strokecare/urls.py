@@ -37,6 +37,7 @@ api = [
     path("", include("apps.messaging.urls")),
     path("", include("apps.family.urls")),
     path("", include("apps.community.urls")),
+    path("", include("apps.recovery.urls")),
     path("schema/", SpectacularAPIView.as_view(), name="schema"),
     path("docs/", SpectacularSwaggerView.as_view(url_name="schema")),
 ]

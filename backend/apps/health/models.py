@@ -162,6 +162,8 @@ class Reminder(models.Model):
         TASKS = "tasks", "Recovery plan tasks"
         BLOOD_PRESSURE = "blood_pressure", "Blood pressure reading"
         CHECKIN = "checkin", "Daily check-in"
+        MEDICINES = "medicines", "Medicine doses"
+        MOBILITY = "mobility", "Movement"
 
     class Channel(models.TextChoices):
         IN_APP = "in_app", "In the app"

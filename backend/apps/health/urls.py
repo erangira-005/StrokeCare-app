@@ -17,6 +17,7 @@ urlpatterns = [
     path("patients/<patient:patient_ref>/checkins/", views.CheckInsView.as_view()),
     path("patients/<patient:patient_ref>/summary/", views.SummaryView.as_view()),
     path("patients/<patient:patient_ref>/medications/", medicines.MedicationsView.as_view()),
+    path("patients/<patient:patient_ref>/medications/doses/bulk/", medicines.BulkDoseView.as_view()),
     path("patients/<patient:patient_ref>/medications/<uuid:med_id>/", medicines.MedicationDetailView.as_view()),
     path("patients/<patient:patient_ref>/medications/<uuid:med_id>/doses/", medicines.DoseView.as_view()),
     path("patients/<patient:patient_ref>/visit-questions/", medicines.VisitQuestionsView.as_view()),

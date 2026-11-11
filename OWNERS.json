@@ -54,11 +54,13 @@
         "backend/apps/health/**",
         "backend/apps/family/**",
         "backend/apps/community/**",
+        "backend/apps/recovery/**",
         "backend/strokecare/urls.py",
         "backend/tests/test_auth.py",
         "backend/tests/test_health.py",
         "backend/tests/test_medicines_and_visits.py",
-        "backend/tests/test_calendar_voice_visits.py"
+        "backend/tests/test_calendar_voice_visits.py",
+        "backend/tests/test_recovery_features.py"
       ]
     },
     "Erica Rurangwa Sheja": {

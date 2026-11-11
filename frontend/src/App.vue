@@ -4,12 +4,13 @@ import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import {
-  PhBookOpenText, PhChatCircleText, PhCopy, PhHeartbeat, PhHouse, PhMapPin, PhNotePencil, PhUserCircle, PhUsersThree,
-  PhWifiSlash,
+  PhBookOpenText, PhChatCircleText, PhCopy, PhHeartbeat, PhHouse, PhMapPin, PhNotePencil, PhStethoscope, PhUserCircle,
+  PhUsersThree, PhWifiSlash,
 } from '@phosphor-icons/vue'
 
 import EmergencyLink from '@/components/EmergencyLink.vue'
 import ToastHost from '@/components/ToastHost.vue'
+import { showingCopy } from '@/api/copy'
 import { pendingCount } from '@/api/offline'
 import { setLocale, type Locale } from '@/i18n'
 import { useAuth } from '@/stores/auth'
@@ -56,6 +57,7 @@ const tabs = computed(() => {
     ]
   if (r === 'clinician')
     return [
+      { to: '/doctor', label: t('nav.doctor'), icon: PhStethoscope },
       { to: '/caseload', label: t('nav.caseload'), icon: PhUsersThree },
       { to: '/inbox', label: t('nav.messages'), icon: PhChatCircleText },
       { to: '/templates', label: t('nav.templates'), icon: PhCopy },
@@ -84,7 +86,7 @@ const bare = computed(() => ['/login', '/register', '/consent'].includes(route.p
 <template>
   <div :class="{ 'layout-wide': wide }">
     <nav v-if="wide && !bare" class="side-nav sc-hero" :aria-label="t('nav.main')">
-      <RouterLink to="/caseload" class="brand" style="color: var(--on-hero); padding: 0 0.5rem 1.25rem">
+      <RouterLink to="/doctor" class="brand" style="color: var(--on-hero); padding: 0 0.5rem 1.25rem">
         <span class="brand-mark sc-glass"><PhHeartbeat :size="22" weight="duotone" /></span>StrokeCare
       </RouterLink>
       <RouterLink v-for="tab in tabs" :key="tab.to" :to="tab.to" class="side-link">
@@ -106,6 +108,8 @@ const bare = computed(() => ['/login', '/register', '/consent'].includes(route.p
         <span v-if="!online">{{ t('offline.notice') }}</span>
         <span v-if="pendingCount">{{ t('offline.pending', { n: pendingCount }) }}</span>
       </p>
+
+      <p v-if="showingCopy" class="banner" role="status" style="margin: 0.75rem 1rem 0"><PhWifiSlash :size="20" /><span>{{ t('offline.copyShown') }}</span></p>
 
       <RouterView v-slot="{ Component }">
         <Transition name="page" mode="out-in"><component :is="Component" :key="route.fullPath" /></Transition>
