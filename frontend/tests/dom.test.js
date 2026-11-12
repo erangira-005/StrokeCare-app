@@ -5,7 +5,7 @@ import './setup.js'
 import assert from 'node:assert/strict'
 import { describe, it } from 'node:test'
 
-import { esc, flag, html, isoDay, raw } from '../site/js/dom.js'
+import { esc, flag, html, isoDay, joinMarkup, raw } from '../site/js/dom.js'
 
 describe('html templates', () => {
   it('escapes everything that could become markup', () => {
@@ -37,6 +37,13 @@ describe('html templates', () => {
   it('raw() is the only way to insert markup as written', () => {
     assert.equal(String(html`<p>${raw('<b>x</b>')}</p>`), '<p><b>x</b></p>')
     assert.equal(String(html`<p>${'<b>x</b>'}</p>`), '<p>&lt;b&gt;x&lt;/b&gt;</p>')
+  })
+
+  it('a list of templates is joined with nothing between the items (no stray commas in the tab bar)', () => {
+    const tabs = ['Today', 'Learn', 'Me'].map((label) => html`<a>${label}</a>`)
+    assert.equal(joinMarkup(tabs), '<a>Today</a><a>Learn</a><a>Me</a>')
+    assert.equal(joinMarkup(html`<p>x</p>`), '<p>x</p>')
+    assert.equal(joinMarkup([]), '') // an empty list is empty, so the area can be hidden
   })
 
   it('flag() gives "true" or "false" for aria attributes', () => {

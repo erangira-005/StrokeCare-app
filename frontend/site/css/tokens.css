@@ -94,15 +94,12 @@
 
 .sc-app[data-font="easy"] { --font: 'Atkinson Hyperlegible Next', system-ui, sans-serif; }
 
-/* --- Icons: Phosphor (MIT), drawn with mask so they take the text colour ---------------------------- */
+/* --- Icons: Phosphor (MIT), inline SVG (js/icons.js). They take the text colour from fill="currentColor" and
+   their size from the width and height written on each one. Do NOT give .ph a background or a mask: that paints
+   the whole icon box as a solid square. -------------------------------------------------------------------- */
 .ph {
   display: inline-block;
-  width: 1em;
-  height: 1em;
   flex-shrink: 0;
-  background-color: currentColor;
-  -webkit-mask: var(--i) center / contain no-repeat;
-  mask: var(--i) center / contain no-repeat;
   vertical-align: middle;
 }
 

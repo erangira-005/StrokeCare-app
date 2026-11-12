@@ -6,7 +6,7 @@
 //
 // The list below is generated: run `python tools/make_precache.py` after changing any file under frontend/site.
 // BEGIN PRECACHE
-const VERSION = 'b6920215945e'
+const VERSION = '1f26f48458d1'
 const PRECACHE = [
   '/',
   '/css/app.css',

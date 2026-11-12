@@ -46,6 +46,20 @@ describe('the page and the scripts follow the content security policy', () => {
   })
 })
 
+describe('icons', () => {
+  it('the .ph rule gives icons no background or mask (that paints every icon as a solid square)', () => {
+    const rule = /\.ph\s*\{([^}]*)\}/.exec(read('css/tokens.css'))
+    assert.ok(rule, 'the .ph rule is missing')
+    assert.equal(/background|mask|width|height/.test(rule[1]), false, rule[1])
+  })
+
+  it('every icon draws something and uses only shapes that take the text colour', () => {
+    const data = read('js/icons.js')
+    assert.equal(/<rect[^>]*fill="none"/.test(data), false, 'a transparent <rect> from the source SVG was left in')
+    assert.ok(/<path /.test(data))
+  })
+})
+
 describe('the service worker', () => {
   const list = [...sw.slice(sw.indexOf('// BEGIN PRECACHE'), sw.indexOf('// END PRECACHE')).matchAll(/^\s+'([^']+)',$/gm)].map((m) => m[1])
 

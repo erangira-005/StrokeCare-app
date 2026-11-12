@@ -3,7 +3,7 @@
 // signed-in role, and the offline notices. It redraws whenever the route, the person, the language or the
 // connection changes.
 import { showingCopy } from './copy.js'
-import { html } from './dom.js'
+import { html, joinMarkup } from './dom.js'
 import { locale, t } from './i18n.js'
 import { pendingCount } from './offline.js'
 import { currentPath, onRouteChange } from './router.js'
@@ -55,10 +55,12 @@ function tabs() {
 }
 
 const isActive = (to) => currentPath() === to || currentPath().startsWith(`${to}/`)
+// `markup` is one html`` template or a list of them. An empty result hides the area.
 const set = (id, markup) => {
   const el = document.getElementById(id)
-  el.hidden = markup === ''
-  el.innerHTML = String(markup)
+  const text = joinMarkup(markup)
+  el.hidden = text === ''
+  el.innerHTML = text
 }
 
 export function renderChrome() {

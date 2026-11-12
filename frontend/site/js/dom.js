@@ -34,6 +34,10 @@ export function html(strings, ...values) {
   return new Raw(out)
 }
 
+/** One template, or a list of them, as a single string. A list is joined with nothing between the items
+ *  (String(list) would put a comma between them). */
+export const joinMarkup = (markup) => (Array.isArray(markup) ? markup.map(String).join('') : String(markup))
+
 /** "true" or "false" for an aria attribute (a plain false would be dropped). */
 export const flag = (value) => (value ? 'true' : 'false')
 
